@@ -27,4 +27,4 @@ from .utils import DEFAULT_OPTIONS, PDF_PAGE_LIMIT, PROMPT_K_OPTION, PROMPT_U_OP
 from . import gprint
 from . import jsonpath
 
-__version__ = '0.1.0'
+__version__ = '0.1.6'

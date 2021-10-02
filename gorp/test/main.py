@@ -1,9 +1,9 @@
-from .test import test_ku_options
-from .test import test_jsonpath
-from .test import test_textcache
-from .test import test_option_combos
-from .test import test_pdf_option
-from .test import test_q_option
+from gorp.test import test_ku_options
+from gorp.test import test_jsonpath
+from gorp.test import test_textcache
+from gorp.test import test_option_combos
+from gorp.test import test_pdf_option
+from gorp.test import test_q_option
 import doctest
 
 def main():

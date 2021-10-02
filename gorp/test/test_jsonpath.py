@@ -1,4 +1,4 @@
-from .jsonpath import *
+from gorp.jsonpath import *
 
 def jsonpath_testdoc():
     '''

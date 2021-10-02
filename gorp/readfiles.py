@@ -599,16 +599,24 @@ Returns: a generator that yields names of directories or files, as per d and r.
         if r:
             if d:
                 for root, dirs, files in os.walk(fname):
+                    root = os.path.relpath(root, fname)
+                    if root == '.':
+                        root = ''
+                    GorpLogger.info(f"in generateFileSet (r and d), root = {root}")
                     for Dir in dirs:
-                        yield os.path.join(fname, root, Dir)
+                        yield os.path.join(root, Dir)
             else:
                 for root, dirs, files in os.walk(fname):
+                    root = os.path.relpath(root, fname)
+                    if root == '.':
+                        root = ''
+                    GorpLogger.info(f"in generateFileSet (r and not d), root = {root}") 
                     for file in files:
-                        yield os.path.join(fname, root, file)
+                        yield os.path.join(root, file)
         else:
             for file in os.listdir(fname):
-                file = os.path.join(fname, file)
-                if d and not os.path.isdir(file):
+                GorpLogger.info(f"in generateFileSet (not r), file = {file}")
+                if d and not os.path.isdir(os.path.join(fname, file)):
                     continue
                 yield file
 
@@ -774,6 +782,7 @@ class FileReader:
         '''Used by FileReaders to find matching text and filenames'''
         file = os.path.join(self.dirName,rel_fname)
         ext = get_ext(rel_fname)
+        GorpLogger.info(f"In FileReader._single_file_gorp, rel_fname = {rel_fname}, file = {file}, ext = {ext}")
         if ext: # get_ext returns None for strings with no '.', like most dirnames
             ext = ext.lower()
         if self.a or self.d:

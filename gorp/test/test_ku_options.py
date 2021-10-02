@@ -2,9 +2,9 @@
 # tested in python 3.6-3.9
 import os
 import shutil
-from .readfiles import *
-from .k_option_del_files import killGorp
-from .gprint import bad_json
+from gorp.readfiles import *
+from gorp.k_option_del_files import killGorp
+from gorp.gprint import bad_json
 try:
     import yaml
 except:

@@ -1,4 +1,4 @@
-from .readfiles import *
+from gorp.readfiles import *
 import itertools
 
 

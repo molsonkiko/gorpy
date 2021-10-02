@@ -1,5 +1,5 @@
-from .readfiles import *
-from .test.test_ku_options import setup_tempdir
+from gorp.readfiles import *
+from gorp.test.test_ku_options import setup_tempdir
 
 previous_allow_remove_trees = ALLOW_REMOVE_TREES
 previous_prompt_k_option = PROMPT_K_OPTION

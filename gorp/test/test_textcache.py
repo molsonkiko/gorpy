@@ -1,6 +1,6 @@
-from .readfiles import warn_first_import_error
+from gorp.readfiles import warn_first_import_error
 try:
-    from .textcache import *
+    from gorp.textcache import *
     ok_to_test = True
 except ImportError: # sortedcollections is a dependency of TextCache
     warn_first_import_error("sortedcollections")

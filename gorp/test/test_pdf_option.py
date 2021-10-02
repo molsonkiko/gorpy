@@ -1,10 +1,10 @@
-from .readfiles import *
+from gorp.readfiles import *
 import itertools
 # tested on Python 3.6 - 3.9
 
 def test_pdf_option():
     try:
-        import .pdf_utils # just importing to get any ImportErrors out of the way
+        import gorp.pdf_utils # just importing to get any ImportErrors out of the way
     except ImportError:
         warn_first_import_error("pdfminer")
         warn_first_import_error("sortedcollections")

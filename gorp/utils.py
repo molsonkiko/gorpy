@@ -4,7 +4,7 @@ import re
 import datetime
 import json
 import time
-import dateutil
+from dateutil import parser as date_parser
 from math_eval import compute
 import logging
 GorpLogger = logging.getLogger("GorpLogger")
@@ -34,19 +34,19 @@ INITIAL_DEFAULT_OPTIONS = {'PDF_PAGE_LIMIT': 100,
                            "ALLOW_REMOVE_TREES": False,
                            'bad_text_files': set()} #this is how they are initialized
 
-with open(default_options_fname) as f:
-    try:
+try:
+    with open(default_options_fname) as f:
         DEFAULT_OPTIONS = json.load(f)
-    except:
-        # DEFAULT_OPTIONS file doesn't exist or contents were deleted somehow
-        DEFAULT_OPTIONS = INITIAL_DEFAULT_OPTIONS.copy()
-    DEFAULT_OPTIONS['bad_text_files'] = set(DEFAULT_OPTIONS['bad_text_files'])
-    # contains all filenames of files with a text-type extension 
-    # but that can't be read by the open() method using any 
-    # encoding in utils.text_encodings.
-    # Checking set membership is at least 10,000x faster than
-    # checking all of those encodings.
-    globals().update(DEFAULT_OPTIONS)
+except:
+    # DEFAULT_OPTIONS file doesn't exist or contents were deleted somehow
+    DEFAULT_OPTIONS = INITIAL_DEFAULT_OPTIONS.copy()
+DEFAULT_OPTIONS['bad_text_files'] = set(DEFAULT_OPTIONS['bad_text_files'])
+# contains all filenames of files with a text-type extension 
+# but that can't be read by the open() method using any 
+# encoding in utils.text_encodings.
+# Checking set membership is at least 10,000x faster than
+# checking all of those encodings.
+globals().update(DEFAULT_OPTIONS)
 
 
 def is_iterable(x):
@@ -152,7 +152,7 @@ return a datetime.datetime object representing that time.'''
     mod_time_seconds = os.path.getmtime(fname)
     formatted_time_string = time.ctime(mod_time_seconds)
     if as_datetime:
-        return dateutil.parser.parse(formatted_time_string)
+        return date_parser.parse(formatted_time_string)
     else:
         return formatted_time_string
 

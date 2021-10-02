@@ -10,8 +10,14 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md'))
 setup(
     name='gorpy',
     version=package.__version__,
-    packages=['gorp'],
-    # package_data={'gorp': ['cmap/*.pickle.gz']},
+    packages=['gorp',
+              os.path.join('gorp', 'test'),
+    ],
+    package_dir = {'gorp': 'gorp'},
+    package_data={
+        'gorp': ['testDir/**/*.*'],
+    },
+    include_package_data = True,
     install_requires=[
         'math_eval',
         'python-dateutil',

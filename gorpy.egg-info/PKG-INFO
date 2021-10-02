@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: gorpy
-Version: 0.1.0
+Version: 0.1.6
 Summary: Grep tool with extensions for reading files in many different ways
 Home-page: https://github.com/molsonkiko/gorpy
 Author: Mark Johnston Olson
@@ -83,7 +83,7 @@ How to use
 Contributing
 ------------
 
-Be sure to read the [contribution guidelines](https://github.com/molsonkiko/gorpy/CONTRIBUTING.md). 
+Be sure to read the [contribution guidelines](https://github.com/molsonkiko/gorpy/blob/main/CONTRIBUTING.md). 
 
 Other stuff
 ------------
