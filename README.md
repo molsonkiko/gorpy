@@ -50,7 +50,7 @@ How to use
 Contributing
 ------------
 
-Be sure to read the [contribution guidelines](https://github.com/molsonkiko/gorpy/CONTRIBUTING.md). 
+Be sure to read the [contribution guidelines](https://github.com/molsonkiko/gorpy/blob/main/CONTRIBUTING.md). 
 
 Other stuff
 ------------
