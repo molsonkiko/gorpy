@@ -1,0 +1,7 @@
+-g: TBD
+-b: parse text in Word documents, PDFs, and Excel files. Probably make it so that the option can specify only some of those types (e.g., -bwp would search only Word and Excel docs, not PDFs).
+-o (change): make it so that it returns only the matched parts of lines rather than the entire line
+-q: used after a pipe. Returns the union of the results from the query up to that pipe with the query after the pipe.
+-u: update all files found this way, as with sed
+-x: read XML and HTML with XPath rather than using normal regexes
+-z: zip all files found this way into a zip file at target filepath

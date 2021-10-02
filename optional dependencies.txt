@@ -1,0 +1,9 @@
+OPTIONAL DEPENDENCIES (TODO: figure out minimum version of each)
+sortedcollections 
+cssselect
+docx
+lxml
+openpyxl
+pandas
+pdfminer.six
+pyyaml

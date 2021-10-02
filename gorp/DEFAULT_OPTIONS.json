@@ -1,0 +1,10 @@
+{
+"PDF_PAGE_LIMIT": 100,
+"PROMPT_K_OPTION": true,
+"PROMPT_U_OPTION": true,
+"U_OPTION_OVERWRITES": true,
+"ALLOW_REMOVE_TREES": false,
+"bad_text_files":
+    [
+    ]
+}
