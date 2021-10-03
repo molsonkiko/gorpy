@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-import gorpy.gorp as package
+import gorp as package
 
 
 with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md')) as f:
