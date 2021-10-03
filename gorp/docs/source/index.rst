@@ -21,7 +21,7 @@ This is a grep/sed/ls/mv tool for Python 3.6-3.9 that includes:
     * and much more
 
 It can be conveniently used via the command line, through an interactive prompt,
-    or programmatically using a :class:`gorp.readfiles.GorpSession` object.
+    or programmatically using a :class:`.readfiles.GorpSession` object.
 
 Wait: yet another grep tool? Didn't we already have enough of those?
 
