@@ -3,10 +3,7 @@ gorpy
 
 *Good Old Regex and Python*
 
-Some packages describing package
-
-Can't have a readthedocs.io site until I have a docs section formatted for Sphinx.
-[Read the Docs](URL of readthedocs.io site).
+[Read the Docs] (https://gorpy.readthedocs.io/en/latest/index.html)
 
 
 Features
@@ -46,7 +43,8 @@ How to use
     # more results
     gorp> <another query>
     ```
-* or access gorp programmatically in a Python session.
+* or access gorp programmatically in a Python session (see gorp.readfiles.GorpSession)
+
 Contributing
 ------------
 
