@@ -28,13 +28,13 @@ Some things that you can do with this module:
 
 **FUNCTIONS**
 
-.. autofunction:: .jsonpath.json_extract
+.. autofunction:: gorp.jsonpath.json_extract
 
-.. autofunction:: .jsonpath.parse_json_path
+.. autofunction:: gorp.jsonpath.parse_json_path
 
-.. autofunction:: .jsonpath.mutate_json
+.. autofunction:: gorp.jsonpath.mutate_json
 
-.. autofunction:: .jsonpath.mutate_json_repeatedly
+.. autofunction:: gorp.jsonpath.mutate_json_repeatedly
 
 **LOANER FUNCTION FROM math_eval**
 
@@ -42,19 +42,19 @@ Some things that you can do with this module:
 
 **CLASSES**
 
-.. autoclass:: .jsonpath.JsonPath
+.. autoclass:: gorp.jsonpath.JsonPath
 
-.. autofunction:: .jsonpath.JsonPath.descend
+.. autofunction:: gorp.jsonpath.JsonPath.descend
 
-.. autofunction:: .jsonpath.JsonPath.extract
+.. autofunction:: gorp.jsonpath.JsonPath.extract
 
-.. autofunction:: .jsonpath.JsonPath.sub
-
-
-.. autoclass:: .jsonpath.Filter
+.. autofunction:: gorp.jsonpath.JsonPath.sub
 
 
-.. autoclass:: .jsonpath.GlobalConstraint
+.. autoclass:: gorp.jsonpath.Filter
+
+
+.. autoclass:: gorp.jsonpath.GlobalConstraint
 
 
 .. autoclass:: math_eval.IntRange

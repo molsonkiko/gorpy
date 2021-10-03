@@ -11,10 +11,10 @@ the source code.
 
 **CLASSES**
 
-.. autoclass:: .readfiles.GorpSession
+.. autoclass:: gorp.readfiles.GorpSession
 
 
-.. autoclass:: .readfiles.GorpHandler
+.. autoclass:: gorp.readfiles.GorpHandler
 
 
-.. autoclass:: .readfiles.FileReader
+.. autoclass:: gorp.readfiles.FileReader
