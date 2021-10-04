@@ -20,6 +20,9 @@
 - You can reset all the default behaviors to their original values with 
     "DEFAULTS.reset()".
 - You can set a DEFAULT option as well, e.g. "DEFAULTS.PROMPT_K_OPTION = True"
+- Finally, not all text files will be read by default by gorp. To change which
+    file extensions are treated as text files, see site-packages/gorp/utils.py.
+- "gorp doc f" will show a list of "text-type-files".
 '''
 from .utils import *
 from .gprint import gprint
@@ -691,6 +694,7 @@ class FileReader:
                 self.dirName = files
                 self.files = generateFileSet(files, self.d, self.r)
             else:
+                self.dirName = ''
                 if self.e: 
                     # 'e' option means you read files in from a JSON/YAML file
                     use_yaml = get_ext(files) in {'yml', 'yaml'}

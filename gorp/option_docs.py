@@ -8,6 +8,7 @@ option_descriptions = {
 "docx": "-docx (read text of Word documents)",
 "e": "-e (read a list of filenames from a JSON or YAML file)",
 "f": "-f(ilenames and directories only)",
+"g": "-g (execute a series of gorp commands written in a text file)",
 "h": "-h (display lines, not files)",
 "i": "-i (case insensitive)",
 "j": "-j (read JSON files as JSON, using gorp.jsonpath)",
@@ -48,9 +49,18 @@ DEFAULTS.U_OPTION_OVERWRITES determines whether the -u option overwrites files w
 DEFAULTS.PROMPT_U_OPTION determines whether there's an interactive prompt that considers
     each edit on a case-by-case basis.''',
     
+    'e': '''The syntax is "-e <other options> '<regex>' /<fname>.(json|yaml)".
+fname.json (or fname.yaml) should contain a single array of valid filenames
+or a dict with valid filenames as keys. A typical use of the -e option would
+be to first dump a bunch of filenames into a json/yaml file with the -w option
+and then read it in the future with the -e option.''',
+    
     'f': f'''This option filters filenames, and ignores filenames with 
 extensions not in the following list:
 {gprint(textTypeFiles, str)}''',
+
+    'g': '''The syntax for the -g option is "python -m gorp -g <text file name>". 
+This option can only be used from the command line.''',
     
     'docx': "Gets the text only. No formatting information is extracted.",
     

@@ -62,8 +62,10 @@ textTypeFiles = {'bat',
  'cs',
  'css',
  'csv',
- 'fwf',
+ 'fwf', # fixed-width files (does anyone actually use these?)
+ 'gitignore',
  'go',
+ 'h', # extension for C and C++ header files (e.g., "#include 'stdio.h')
  'htm',
  'html',
  'ipynb',
@@ -71,12 +73,14 @@ textTypeFiles = {'bat',
  'js',
  'json',
  'log',
+ 'md',
  'py',
  'R',
  'rb',
  'Rmd',
  'rs',
- 'rst',
+ 'rst', # ReStructuredText (e.g., Sphinx)
+ 'sh', # bash file for Linux
  'sql',
  'toml',
  'tsv',
@@ -221,7 +225,7 @@ def ext_checker(fname,ext):
 
 def get_ext(fname):
     '''Returns the extension of a filename, or None if there is no extension.'''
-    for ii in range(len(fname)-1,0,-1):
+    for ii in range(len(fname)-1,-1,-1):
         if fname[ii]=='.':
             return fname[ii+1:]
 
