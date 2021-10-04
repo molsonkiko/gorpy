@@ -75,9 +75,10 @@ textTypeFiles = {'bat',
  'log',
  'md',
  'py',
- 'R',
+ 'r', # normally R files have the '.R' extension but all extensions are
+      # coerced to lowercase before reading anyway; same note for 'rmd' ext.
  'rb',
- 'Rmd',
+ 'rmd',
  'rs',
  'rst', # ReStructuredText (e.g., Sphinx)
  'sh', # bash file for Linux
