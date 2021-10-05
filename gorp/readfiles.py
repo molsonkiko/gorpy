@@ -302,7 +302,7 @@ GorpHandlers should only be created by a GorpSession.'''
         GorpLogger.info(f"In GorpHandler.__init__, parsedQuery = {self.parsedQuery}")
         self.readers = []
         self.level = 0
-        self.options = [set(re.split("\s*-", x[0].strip().lower())[1:]) for x in self.parsedQuery]
+        self.options = [set(re.findall("(?<=-)\S+", x[0].strip().lower())) for x in self.parsedQuery]
         self.all_options = set(opt for opts in self.options for opt in opts)
         self.regexes = [x[1].replace('\\\'', '\'') for x in self.parsedQuery]
         if resultset is None:
@@ -751,9 +751,17 @@ class FileReader:
             if isinstance(self.resultset, dict):
                 short_results = Orddict()
                 for ii, elt in enumerate(self.resultset):
-                    if ii == new_result_len:
-                        break
-                    short_results[elt] = self.resultset[elt]
+                    if new_result_len >= 0:
+                        # add the first new_result_len elements of the
+                        # resultset, when iterated through in the default order
+                        if ii == new_result_len:
+                            break
+                        short_results[elt] = self.resultset[elt]
+                    else:
+                        # add the last new_result_len elements of the the
+                        # resultset, when iterated through in the default order
+                        if ii >= len(self.resultset) + new_result_len:
+                            short_results[elt] = self.resultset[elt]
                 self.resultset = short_results
             else:
                 self.resultset = self.resultset[:new_result_len]
@@ -761,7 +769,10 @@ class FileReader:
             sizes = [(f, last_mod_time(f, True), os.path.getsize(f)) for f in self.resultset]
             sizes.sort(key = lambda x: x[2], reverse = True)
             if new_result_len is not None: # truncate after sorting to get largest
-                sizes = sizes[:new_result_len]
+                if new_result_len < 0:
+                    sizes = sizes[new_result_len:]
+                else:
+                    sizes = sizes[:new_result_len]
             self.summary = [f"{len(sizes)} files", format_bytes(sum(x[-1] for x in sizes))]
             self.resultset = Orddict([(f, (str(mod), format_bytes(siz))) for f,mod,siz in sizes]) 
             # Orddict is just a normal dict for Python 3.7+, else a collections.OrderedDict
@@ -769,14 +780,20 @@ class FileReader:
             modtime_d = [(f,last_mod_time(f,True)) for f in self.resultset]
             modtime_d.sort(key=lambda x: x[1], reverse=True)
             if new_result_len is not None: # truncate after sorting to get most recent
-                modtime_d = modtime_d[:new_result_len]
+                if new_result_len < 0: # get OLDEST files
+                    modtime_d = modtime_d[new_result_len:]
+                else: # get NEWEST FILES
+                    modtime_d = modtime_d[:new_result_len]
             self.resultset = Orddict((f, str(mod)) for f, mod in modtime_d)
             self.summary = f"{len(self.resultset)} files"
         elif self.s: # get size; not last mod time
             sizes = [(f, os.path.getsize(f)) for f in self.resultset]
             sizes.sort(key = lambda x: x[1], reverse = True)
             if new_result_len is not None: # truncate after sorting to get largest
-                sizes = sizes[:new_result_len]
+                if new_result_len < 0: # get the new_result_len SMALLEST files
+                    sizes = sizes[new_result_len:]
+                else: # get new_result_len LARGEST files
+                    sizes = sizes[:new_result_len]
             self.summary = [f"{len(sizes)} files", format_bytes(sum(x[-1] for x in sizes))]
             self.resultset = Orddict([(f, format_bytes(siz)) for f,siz in sizes])
         else:

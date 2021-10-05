@@ -16,12 +16,13 @@ option_descriptions = {
 "l": "-l (list filenames)",
 "m": "-m (get last Modification time; sort files by most recent first)",
 "n": "-n (get paths/line Numbers of results found)",
+"num": "-<integer> (truncate resultset to length <integer>)", 
 "o": "-o (match only entire words)",
 "p": "-p (oPen all files in the final resultset with their default apps)",
 "pdf": "-pdf (read text of PDF files)",
 "q": "-q (get union (Qnion?) of two resultsets)",
 "r": "-r(ecursive search)",
-"s": "-s(izes of files found; sorts files by size)",
+"s": "-s(izes of files found; sorts files by size descending)",
 "t": "-t (number of files found (and total size if -s arg used)",
 "u": "-u(pdate all files or their contents according to some function)",
 "v": "-v (display only things that DON'T match)",
@@ -86,6 +87,11 @@ DEFAULTS.ALLOW_REMOVE_TREES determines whether the -k option can be used to dele
     entire directory trees. By default, the -k option can't touch directories at all.
 DEFAULTS.PROMPT_K_OPTION determines whether the user can see an interactive prompt and
     decide on a case-by-case basis which files and directories they want to delete.''',
+    
+    'num': '''The integer can be positive or negative. For example, 
+"-2 <query>" would get the first two files alphabetically that satisfy <query>,
+"-3 -s <query>" would get the three LARGEST files that satisfy <query>, and
+"--3 -s <query>" would get the three SMALLEST files that satisfy <query>.''',
     
     'j': [
 '''The -j and -y options are based on gorp.jsonpath, and specifically on
