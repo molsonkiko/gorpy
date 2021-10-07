@@ -42,9 +42,9 @@ Reads the text of an (X|HT)ML document and returns a dict mapping a list of the
         results = tree.xpath(path)
     del tree
     out = {}
-    for res in results:
+    for ii, res in enumerate(results):
         fulltext = etree.tostring(res, pretty_print = pretty_print)
         ancestors = tuple(reversed([x.tag for x in res.iterancestors()]))
-        out[ancestors] = fulltext
+        out[ancestors + (ii,)] = fulltext
     return out
                 
