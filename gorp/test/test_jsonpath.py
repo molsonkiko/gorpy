@@ -28,7 +28,7 @@ ALERT: It looks like you may have tried to match keys with regular expressions
 >>> json_extract(json = {'b': 3, '6': 7, 'jub': {'uy': [1, 2, 3],  'yu': [6, {'y': 'b', 'M8': 9, 1: (3,0)}]}},  filter_path = '..~~@nnint(k)*2<4vvnnstr(v)>`8`', get_full_path_also = True) 
 Traceback (most recent call last):
 ...
-gorp.jsonpath.JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are allowed as key tests.
+gorp.jsonpath.aggregate.JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are allowed as key tests.
 >>> json_extract(json = [[1, 2, 3, 4, 5], {0: 'a', 1: 'b'}, {2: 'c'}, [6, 7], {3: 'd'}], filter_path = 'nn:3~~@nn1:3', get_full_path_also = True)
 {(0, 1): 2, (0, 2): 3}
 >>> json_extract(json = [[1, 2, 3, 4, 5], {0: 'a', 1: 'b'}, {2: 'c'}, [6, 7], {3: 'd'}],  filter_path = 'nn:3~~@..~~@ggnn1vvnnx[0]<x[1]', get_full_path_also = True)
@@ -92,6 +92,13 @@ ALERT: It looks like you may have forgotten to use the 'nn' token to indicate th
 >>> JsonPath('a~~@nn1:~~ss str(x)', json = jpath_ex.json).sub(ask_permission=False, layers = 2)
 >>> jpath_ex.json
 {'a': [1, '6', '8'], 'b': 6}
+>>> path_vals = [{'a': 1, 'b': 2, 'c': 3}, {'d': 4}, {'e': 5}]
+>>> jp = JsonPath("nn:~~@zz[a-z]", json = path_vals)
+>>> jp.aggregate(sum, 1)
+{('a',): 1, ('b',): 2, ('c',): 3, ('d',): 4, ('e',): 5}
+>>> jp.aggregator = Aggregator(sum, 0)
+>>> jp.aggregate()
+{(0,): 6, (1,): 4, (2,): 5}
     '''
     pass
 
@@ -99,3 +106,4 @@ ALERT: It looks like you may have forgotten to use the 'nn' token to indicate th
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+    doctest.testmod(aggregate)
