@@ -117,8 +117,8 @@ path.
         if isinstance(self.agg_level, IntRange):
             self.agg_level = self.agg_level.slice
         if isinstance(func, str):
-            if func.lower() in agg_funcs: 
-                self.func = agg_funcs[func.lower()]
+            if func.lower().strip() in agg_funcs: 
+                self.func = agg_funcs[func.lower().strip()]
             else:
                 # try using math_eval.compute to find the function;
                 # func may be something like "sum(x[`hits`])/sum(x[`atbats`])"

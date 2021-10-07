@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+'''Contains the JsonPath class and json_extract.
+Those perform this package's actual work of searching JSON.
+'''
 from gorp.jsonpath.parser import *
 
 
@@ -306,6 +307,22 @@ JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are a
     filter_path = "ggvvnnstr(x[`b`]) =~ `^\d`~~zz\dvvnnx<4")
     # The "=~" operator allows regex matching within a compute expression.
 [2]
+>>> baseball = {'foo': 
+...    {'alice': {'hits': [3, 4, 2, 5], 'at-bats': [4, 3, 3, 6]},
+...     'bob': {'hits': [-2, 0, 4, 6], 'at-bats': [1, 3, 5, 6]}},
+... 'bar': 
+...    {'carol': {'hits': [7, 3, 0, 5], 'at-bats': [8, 4, 6, 6]},
+...     'dave': {'hits': [1, 0, 4, 10], 'at-bats': [1, 3, 6, 11]}}}
+>>> json_extract(json = baseball, 
+...              filter_path = "zz~~@~~@.*AGGsumBY0",
+...              # get the sum of everything, grouped by the first level
+...              # of organization (in this case the team)
+...              get_full_path_also = True)
+{('bar',): 75, ('foo',): 53}
+>>> json_extract(json = baseball, 
+...              filter_path = "zz~~@~~@.*AGGsumBY1:",
+...              get_full_path_also = True)
+{('carol', 'at-bats'): 24, ('carol', 'hits'): 15, ('dave', 'at-bats'): 21, ('dave', 'hits'): 15, ('alice', 'at-bats'): 16, ('alice', 'hits'): 14, ('bob', 'at-bats'): 15, ('bob', 'hits'): 8}
     '''
     if isinstance(filter_path, str):
         filter_path = parse_json_path(filter_path, fuzzy_keys = fuzzy_keys)
@@ -644,8 +661,8 @@ Do you want to quit? (y/n) y
     # layer before trying to make replacements.
 >>> jpath_ex.json
 {'a':[1, 14, 8], 'b':6}
->>> JsonPath('a~~@nn1:~~ss str(x)', json = jpath_ex.json).sub(ask_permission=False, 
-                                                             layers = 2)
+>>> JsonPath('a~~@nn1:~~ss str(x)', 
+...          json = jpath_ex.json).sub(ask_permission=False, layers = 2)
     # Here we are using the syntax of parse_json_path that allows us to add a Mutator
     # to a JsonPath by terminating the JsonPath string with "~~ss<func of 1 variable>"
 >>> jpath_ex.json
