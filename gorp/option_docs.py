@@ -415,6 +415,52 @@ gorp> -j -n '..~~@zz^(?i)[a-z]+\d$~~^^' /bad_json.json
         None
         ]
     }
+}''',
+
+'''############
+## CALCULATING AGGREGATE FUNCTIONS AT VARIOUS LEVELS OF GRANULARITY
+############
+Consider a new JSON file, baseball.json.
+{'foo':
+    {'alice': 
+        {'hits': [3, 4, 2, 5], 'at-bats': [4, 3, 3, 6]},
+     'bob': 
+        {'hits': [-2, 0, 4, 6], 'at-bats': [1, 3, 5, 6]}
+    },
+'bar': 
+    {'carol': 
+        {'hits': [7, 3, 0, 5], 'at-bats': [8, 4, 6, 6]},
+     'dave': 
+        {'hits': [1, 0, 4, 10], 'at-bats': [1, 3, 6, 11]}
+    }
+}
+gorp> -j -n 'zz~~@~~@.*AGG sum BY :' /baseball.json
+    # the "AGG sum BY :" at the end of the query means that we sum up all the
+    # numbers we found, grouped by each distinct path (":" means all of it).
+    # So we're aggregating hits and at-bats separately by player-team combo.
+1 files
+{
+'C:\\Users\\mjols\\Python39\\gorpy\\gorp\\testDir\\walnut\\baseball.json':
+    {
+    ('bar', 'carol', 'at-bats'): 24,
+    ('bar', 'carol', 'hits'): 15,
+    ('bar', 'dave', 'at-bats'): 21,
+    ('bar', 'dave', 'hits'): 15,
+    ('foo', 'alice', 'at-bats'): 16,
+    ('foo', 'alice', 'hits'): 14,
+    ('foo', 'bob', 'at-bats'): 15,
+    ('foo', 'bob', 'hits'): 8
+    }
+}
+gorp> -j -n 'zz~~@~~@hitsAGG sum(x)/len(x) BY 0' /baseball.json
+    # average hits grouped by team (could use 'avg' instead of 'sum(x)/len(x)')
+1 files
+{
+'C:\\Users\\mjols\\Python39\\gorpy\\gorp\\testDir\\walnut\\baseball.json':
+    {
+    ('bar',): 3.75,
+    ('foo',): 2.75
+    }
 }
 ~~~~~~~~~~~~~~~
 END OF EXAMPLES
@@ -428,6 +474,7 @@ We've at least touched on all of the key features, the most important of which a
     - 'gg' to create GlobalConstraints that allow comparisons of multiple values in the
         same iterable.
     - '~~@' and '~~^' to get children and parents, respectively .
-    - '!!' to reverse the selectivity of key and value matching.'''
+    - '!!' to reverse the selectivity of key and value matching.
+    - 'AGG<function>BY<int/slice>' to calculate aggregates with grouping.'''
     ]
 }

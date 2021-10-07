@@ -99,6 +99,22 @@ ALERT: It looks like you may have forgotten to use the 'nn' token to indicate th
 >>> jp.aggregator = Aggregator(sum, 0)
 >>> jp.aggregate()
 {(0,): 6, (1,): 4, (2,): 5}
+>>> baseball = {'foo': 
+...    {'alice': {'hits': [3, 4, 2, 5], 'at-bats': [4, 3, 3, 6]},
+...     'bob': {'hits': [-2, 0, 4, 6], 'at-bats': [1, 3, 5, 6]}},
+... 'bar': 
+...    {'carol': {'hits': [7, 3, 0, 5], 'at-bats': [8, 4, 6, 6]},
+...     'dave': {'hits': [1, 0, 4, 10], 'at-bats': [1, 3, 6, 11]}}}
+>>> json_extract(json = baseball, 
+...              filter_path = "zz~~@~~@.*AGGsumBY0",
+...              # get the sum of everything, grouped by the first level
+...              # of organization (in this case the team)
+...              get_full_path_also = True)
+{('bar',): 75, ('foo',): 53}
+>>> json_extract(json = baseball, 
+...              filter_path = "zz~~@~~@.*AGGsumBY1:",
+...              get_full_path_also = True)
+{('carol', 'at-bats'): 24, ('carol', 'hits'): 15, ('dave', 'at-bats'): 21, ('dave', 'hits'): 15, ('alice', 'at-bats'): 16, ('alice', 'hits'): 14, ('bob', 'at-bats'): 15, ('bob', 'hits'): 8}
     '''
     pass
 
