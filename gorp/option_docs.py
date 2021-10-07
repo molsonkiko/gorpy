@@ -318,7 +318,7 @@ gorp> -j -n '6&&baz&&foo' /bad_json.json # WHOOPS! The '&&' for bundling conditi
                     # works if we use the 'zz' flag to invoke fuzzy key matching.
 Traceback (most recent call last)
 ...
-gorp.jsonpath.JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are allowed as key tests.''',
+gorp.jsonpath.aggregate.JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are allowed as key tests.''',
 
 '''############
 ## GlobalConstraints FOR ALLOWING COMPARISONS OF TWO OR MORE KEY-VALUE PAIRS

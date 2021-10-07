@@ -423,6 +423,7 @@ down the resultset'''
                     json.dump(self.resultset,f, indent = 4)
         if self.z: # collect all files into a ZIP file at target location
             import zipfile
+            from gorp.zip_utils import make_relpaths
             write_to_name = increment_name(ext_checker(self.parsedQuery[-1][1], 'zip'))
             with zipfile.ZipFile(write_to_name, 
                                  mode = 'w', # 'x' mode is like 'w', but raises error
@@ -431,7 +432,15 @@ down the resultset'''
                                  # ZIP_STORED is default; it means no compression at all
                                  # ZIP_LZMA and ZIP_BZIP2 may be good alternatives
                                  ) as zf:
-                for fname in self.resultset:
+                if len(self.resultset) > 1:
+                    files = make_relpaths(self.resultset)
+                elif len(self.resultset) == 1:
+                    files = [os.path.basename(f) for f in self.resultset]
+                    # make_relpaths(files) finds the longest path shared by
+                    # all paths in files, and truncates all those files to
+                    # remove the redundant common part.
+                    # But if there's only one file, this chops off everything.
+                for fname in files:
                     zf.write(fname)
         if not (self.w or self.k or self.p or self.t or self.u):
             if self.s or self.m:
@@ -917,7 +926,12 @@ class FileReader:
                     return
                 del text
                 self.jsonpath.add_json(docs)
-                path_obj_map = self.jsonpath.extract()
+                if self.jsonpath.aggregator is not None:
+                    # use the aggregate function of jsonpath to aggregate the
+                    # values in the json, e.g., by summing them
+                    path_obj_map = self.jsonpath.aggregate()
+                else:
+                    path_obj_map = self.jsonpath.extract()
                 if path_obj_map:
                     self.resultset.setdefault(file, {})
                     self.resultset[file].update(path_obj_map) 
