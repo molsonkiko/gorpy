@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-import gorp as package
+# import gorp as package
 
 
 with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md')) as f:
@@ -9,7 +9,7 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md'))
 
 setup(
     name='gorpy',
-    version=package.__version__,
+    version='0.2.0', # change this every time I release a new version
     packages=['gorp',
               os.path.join('gorp', 'test'),
     ],
@@ -43,7 +43,7 @@ setup(
     keywords=[
         'grep tool',
         'text mining',
-        'JSON analysis',
+        'jsonpath',
     ],
     python_requires='>=3.6',
     classifiers=[

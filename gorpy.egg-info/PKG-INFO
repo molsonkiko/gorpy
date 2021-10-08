@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: gorpy
-Version: 0.1.6
+Version: 0.2.0
 Summary: Grep tool with extensions for reading files in many different ways
 Home-page: https://github.com/molsonkiko/gorpy
 Author: Mark Johnston Olson
 Author-email: mjolsonsfca@gmail.com
 License: MIT/X
-Keywords: grep tool,text mining,JSON analysis
+Keywords: grep tool,text mining,jsonpath
 Platform: UNKNOWN
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3.6
@@ -36,10 +36,7 @@ gorpy
 
 *Good Old Regex and Python*
 
-Some packages describing package
-
-Can't have a readthedocs.io site until I have a docs section formatted for Sphinx.
-[Read the Docs](URL of readthedocs.io site).
+[Read the Docs] (https://gorpy.readthedocs.io/en/latest/index.html)
 
 
 Features
@@ -79,7 +76,8 @@ How to use
     # more results
     gorp> <another query>
     ```
-* or access gorp programmatically in a Python session.
+* or access gorp programmatically in a Python session (see gorp.readfiles.GorpSession)
+
 Contributing
 ------------
 

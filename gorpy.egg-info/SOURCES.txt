@@ -8,7 +8,6 @@ gorp/__main__.py
 gorp/bad_json.json
 gorp/extended_programming_file_exts.py
 gorp/gprint.py
-gorp/jsonpath.py
 gorp/k_option_del_files.py
 gorp/option_docs.py
 gorp/pdf_utils.py
@@ -17,14 +16,18 @@ gorp/tabular_excel.py
 gorp/textcache.py
 gorp/utils.py
 gorp/x_option.py
+gorp/zip_utils.py
 gorp/test/__init__.py
 gorp/test/main.py
+gorp/test/test_e_w_options.py
 gorp/test/test_jsonpath.py
 gorp/test/test_ku_options.py
 gorp/test/test_option_combos.py
 gorp/test/test_pdf_option.py
 gorp/test/test_q_option.py
 gorp/test/test_textcache.py
+gorp/test/test_x_option.py
+gorp/test/test_zip.py
 gorp/testDir/anger_date.tsv
 gorp/testDir/bad_json.json
 gorp/testDir/bluddGame.htm
@@ -38,6 +41,7 @@ gorp/testDir/yaml example.yml
 gorp/testDir/foo.barf/file_inside_foo.barf.txt
 gorp/testDir/walnut/AHH_FRESH_MEAT.txt
 gorp/testDir/walnut/Bogo bucks.docx
+gorp/testDir/walnut/baseball.json
 gorp/testDir/walnut/blood4Bludd.htm
 gorp/testDir/walnut/ln1 proofs.pdf
 gorp/testDir/walnut/mbox-short.txt

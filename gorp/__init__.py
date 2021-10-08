@@ -1,5 +1,5 @@
 '''gorpy: Good Old Regex and Python
-This is a grep/sed/ls/mv tool for Python 3.6-3.9 that includes:
+This is a grep/sed/ls/renaming tool for Python 3.6-3.9 that includes:
     * piping syntax, 
     * a built-in jsonpath implementation for searching and manipulating JSON/YAML
         documents, comparable to jsonpath_ng in power and extensibility.

@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. to build this as HTML, use the terminal, go to gorp's directory, and enter
-   sphinx-build -b html docs/source docs/build/html
+.. to build this as HTML, use the terminal, go to gorpy's directory, and enter
+   sphinx-build -b html gorp/docs/source gorp/docs/build/html
    
 .. 80 characters is the recommended maximum line length for reST.
 
