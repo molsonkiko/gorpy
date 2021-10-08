@@ -55,3 +55,6 @@ Other stuff
 
 TODO: add code coverage link (the below link is broken)
 (https://codecov.io/github/URL-OF-PROJECT?branch=master)](https://codecov.io/OTHER-URL-OF-PROJECT)
+
+
+![gorpy logo](https://github.com/molsonkiko/gorpy/blob/main/gorpy_logo_small.PNG?raw=true)
