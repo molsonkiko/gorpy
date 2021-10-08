@@ -19,12 +19,11 @@ I envision gorp being most useful as a tool for editing JSON and YAML based on t
     strength of the jsonpath module.
 I also find the ability to automatically open files found convenient.
 '''
-
+__all__ = ['readfiles', 'option_docs', 'utils', 'x_option', 'zip_utils', 'tabular_excel', 'textcache', '__main__', 'pdf_utils', 'k_option_del_files', 'gprint', 'jsonpath', 'extended_programming_file_exts']
 
 from .readfiles import GorpSession, GorpLogger, GorpHandler, FileReader, Orddict
 from .readfiles import helpstring
 from .utils import DEFAULT_OPTIONS, PDF_PAGE_LIMIT, PROMPT_K_OPTION, PROMPT_U_OPTION, U_OPTION_OVERWRITES
-from . import gprint
 from . import jsonpath
 
-__version__ = '0.1.6'
+__version__ = '0.2.4'

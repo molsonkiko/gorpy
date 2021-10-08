@@ -17,6 +17,12 @@ gorp/textcache.py
 gorp/utils.py
 gorp/x_option.py
 gorp/zip_utils.py
+gorp/jsonpath/__init__.py
+gorp/jsonpath/aggregate.py
+gorp/jsonpath/filters.py
+gorp/jsonpath/jsonpath.py
+gorp/jsonpath/mutate.py
+gorp/jsonpath/parser.py
 gorp/test/__init__.py
 gorp/test/main.py
 gorp/test/test_e_w_options.py

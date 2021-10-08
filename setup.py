@@ -9,9 +9,10 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md'))
 
 setup(
     name='gorpy',
-    version='0.2.0', # change this every time I release a new version
+    version='0.2.4', # change this every time I release a new version
     packages=['gorp',
               os.path.join('gorp', 'test'),
+              os.path.join('gorp', 'jsonpath'),
     ],
     package_dir = {'gorp': 'gorp'},
     package_data={

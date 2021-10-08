@@ -33,9 +33,9 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
  
-## [0.2.0] - 2021-10-08
+## [0.2.4] - 2021-10-08
   
-gorp version 0.2.0, which contains gorp.jsonpath 0.2.0, is now available on the
+gorp version 0.2.4, which contains gorp.jsonpath 0.2.0, is now available on the
 Python package index. It has been tested for Python 3.6 to 3.9.
  
 ### Added

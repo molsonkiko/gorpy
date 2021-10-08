@@ -1,7 +1,11 @@
 import lxml
 from lxml import etree
-from lxml.cssselect import CSSSelector # note that this adds the cssselect package as a
-                                       # dependency
+try:
+    from lxml.cssselect import CSSSelector 
+    # note that this adds the cssselect package as a dependency
+except:
+    CSSSelector = None
+    print("The 'cssselect' package is required if you want to use CSS selectors as well as XPath for the XML/HTML-search 'x' option.")
 from lxml.html import XHTMLParser
 from .utils import get_ext, text_encodings
 htmlparser = etree.HTMLParser()

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>readfiles &#8212; gorpy 0.2.0 documentation</title>
+    <title>readfiles &#8212; gorpy 0.2.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -40,6 +40,50 @@ search and manipulate the file system.</p>
 things gorp, but anyone who wants to help me make this package better can peruse
 the source code.</p>
 <p><strong>CLASSES</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gorp.readfiles.GorpSession">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gorp.readfiles.</span></span><span class="sig-name descname"><span class="pre">GorpSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">print_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gorp.readfiles.GorpSession" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the normal high-level interface for gorp. A typical usage in a
+programmatic context (i.e., not from the command line) is something like this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">GorpSession</span><span class="p">(</span><span class="n">print_output</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span> 
+<span class="go">    # sessions are context managers like file handles from open()</span>
+<span class="go">    session.receive_query(&quot;help&quot;)</span>
+<span class="go">    session.receive_query(&quot;DEFAULTS&quot;)</span>
+<span class="go">    session.receive_query(&quot;cd directory/of/interest&quot;)</span>
+<span class="go">    session.receive_query(&quot;some query&quot;)</span>
+<span class="go">    blah = session.resultset </span>
+<span class="go">    # the resultset of the last query (other than cd/ls/help)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session2</span> <span class="o">=</span> <span class="n">GorpSession</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session2</span><span class="o">.</span><span class="n">receive_query</span><span class="p">(</span><span class="s2">&quot;another query&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gorp.readfiles.GorpHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gorp.readfiles.</span></span><span class="sig-name descname"><span class="pre">GorpHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parsedQuery</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#gorp.readfiles.GorpSession" title="gorp.readfiles.GorpSession"><span class="pre">gorp.readfiles.GorpSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">resultset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gorp.readfiles.GorpHandler" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Handles a single query, including generating the initial resultset, </dt><dd><p>piping to subqueries as needed, and any optional post-processing like 
+the -k and -p options.</p>
+</dd>
+</dl>
+<p>GorpHandlers should only be created by a GorpSession.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gorp.readfiles.FileReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gorp.readfiles.</span></span><span class="sig-name descname"><span class="pre">FileReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#gorp.readfiles.GorpHandler" title="gorp.readfiles.GorpHandler"><span class="pre">gorp.readfiles.GorpHandler</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gorp.readfiles.FileReader" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Handles a single subquery, filtering a set of files based on filenames or text</dt><dd><p>matching a regex. These should only be created by a GorpHandler.</p>
+</dd>
+</dl>
+<p><em>options</em>: a tuple of options.</p>
+<p><em>regex</em>: a string (regex, gorp.jsonpath query, XPath, or CSS selector)</p>
+<p><em>files</em>: a list of files or filename.</p>
+<p><em>handler</em>: the GorpHandler that spawned it.</p>
+</dd></dl>
+
 </section>
 
 
