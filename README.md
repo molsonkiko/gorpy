@@ -58,3 +58,5 @@ TODO: add code coverage link (the below link is broken)
 
 
 ![gorpy logo](https://github.com/molsonkiko/gorpy/blob/main/gorpy_logo_small.PNG?raw=true)
+
+_gorpy_logo.PNG and gorpy_logo_small.PNG modified from https://commons.wikimedia.org/wiki/File:Gorp.jpg and https://www.python.org/static/community_logos/python-logo-master-v3-TM.png_
