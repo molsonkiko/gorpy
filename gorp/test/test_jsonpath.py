@@ -45,7 +45,7 @@ gorp.jsonpath.aggregate.JsonPathError: When not in fuzzy_keys mode, only IntRang
 {('jub',): {'uy': [1, 2, 3], 'yu': [6, {'y': 'b', 'M8': 9, 1: (3, 0)}]}}
 >>> json_extract(filter_path = 'zz^[a-z]vvnnv>3&&str(v)<`3`', json = {'a':17, 'b':2, 'c': 4, 'd': 31}, get_full_path_also=True) 
 {('a',): 17}
->>> json_extract(json = {'b': 3,  'g6': 2,  '6': 7,  'jub': {'uy': [1, 2, 3], 'yu': [6, {'y': 'b', 'M8': 9, 1: (3,0)}]}}, filter_path = "ggvvnnstr(x[`b`]) =~ `^\d`~~zz\dvvnnx<4")
+>>> json_extract(json = {'b': 3,  'g6': 2,  '6': 7}, filter_path = "ggvvnnstr(x[`b`]) =~ `^\d`~~zz\dvvnnx<4")
 [2]
 >>> parse_json_path("nn5:8vv77")
 [[Filter(keys_in = [IntRange(5, 8, 1)], vals_in = ['77'], key_or_val = False, action = 'down', fuzzy_keys = False)]]

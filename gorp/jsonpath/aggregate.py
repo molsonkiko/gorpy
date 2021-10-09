@@ -71,7 +71,7 @@ __________
 >>> agg_by_path(path_vals, len, slice(0)) # get total count of everything
 {(): 5}
 >>> ragged_paths = {(0,):1, (0, 1, 2): 2, (0, 2, 3): 3, (1, 1): 4}
->>> agg_by_path(ragged_paths, sum 1) # the (): 1 means that there is a path with no second element. It would probably be better to raise a ValueError in this case.
+>>> agg_by_path(ragged_paths, sum, 1) # the (): 1 means that there is a path with no second element. It would probably be better to raise a ValueError in this case.
 {(): 1, (1,): 6, (2,): 3}
 >>> agg_by_path(ragged_paths, sum, slice(2))
 {(0,): 1, (0, 1): 2, (0, 2): 3, (1, 1): 4}

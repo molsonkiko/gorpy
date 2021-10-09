@@ -303,7 +303,7 @@ JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are a
     # and the value has to have a numeric value greater than 3 ("x>3") AND
     # a string value less than '3' ("str(x)<`3`).
 {('a',): 17}
->>> json_extract(json = bad_json,
+>>> json_extract(json = {'b': 3,  'g6': 2,  '6': 7},
     filter_path = "ggvvnnstr(x[`b`]) =~ `^\d`~~zz\dvvnnx<4")
     # The "=~" operator allows regex matching within a compute expression.
 [2]
