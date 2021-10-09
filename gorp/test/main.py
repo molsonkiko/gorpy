@@ -17,6 +17,7 @@ def main():
     test_ku_options.main()
     print("===============\nTesting jsonpath (no output means everything is fine)")
     doctest.testmod(test_jsonpath)
+    doctest.testmod(test_jsonpath.aggregate)
     print("===============\nTesting many different combinations of options")
     test_option_combos.test_combo_results()
     print("===============\nTesting the PDF option")
