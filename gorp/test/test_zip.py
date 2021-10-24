@@ -39,18 +39,22 @@ def main():
         os.unlink('zip_test.zip')
         
         # TEST 3: multiple files in same directory
-        query = "-a 'THARST' /. -}} -z 'zip_test.zip'"
-        session.receive_query(query)
-        new_listdir = set(os.listdir())
-        assert new_listdir == og_listdir | {'zip_test.zip'}, \
-            f"{query} did not correctly create the new zip file 'zip_test.zip'"
-        zf = ZipFile('zip_test.zip')
-        files_in_zf = set(x.filename for x in zf.filelist)
-        correct_files_in_zf = {'BLUTENTHARST.sql',
-                               'dud(ENTHARST.java',
-                               'GUT)enTHARST.js'}
-        assert files_in_zf == correct_files_in_zf, \
-            f"'zip_test.py' should have contained only {correct_files_in_zf}, but instead contained {files_in_zf}"
+        for zip_opt in ['z', 'zl', 'zb']:
+            # try uncompressed, LZMA-zipped, and bzipped.
+            query = f"-a 'THARST' /. -}} -{zip_opt} 'zip_test.zip'"
+            session.receive_query(query)
+            new_listdir = set(os.listdir())
+            assert new_listdir == og_listdir | {'zip_test.zip'}, \
+                f"{query} did not correctly create the new zip file 'zip_test.zip'"
+            zf = ZipFile('zip_test.zip')
+            files_in_zf = set(x.filename for x in zf.filelist)
+            correct_files_in_zf = {'BLUTENTHARST.sql',
+                                   'dud(ENTHARST.java',
+                                   'GUT)enTHARST.js'}
+            assert files_in_zf == correct_files_in_zf, \
+                f"'zip_test.py' should have contained only {correct_files_in_zf}, but instead contained {files_in_zf}"
+            zf.close()
+            os.unlink("zip_test.zip")
     finally:
         try:
             zf.close()

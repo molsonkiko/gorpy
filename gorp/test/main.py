@@ -7,6 +7,7 @@ from gorp.test import test_q_option
 from gorp.test import test_e_w_options
 from gorp.test import test_zip
 from gorp.test import test_x_option
+from gorp.test import test_b_option
 import doctest
 
 def main():
@@ -30,6 +31,8 @@ def main():
     test_zip.main()
     print("===============\nTesting -x option for reading XML and HTML")
     test_x_option.main()
+    print("===============\nTesting -b option for reading files as raw bytes")
+    test_b_option.test_combo_results()
     
 if __name__ == '__main__':
     main()

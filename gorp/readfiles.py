@@ -127,7 +127,8 @@ programmatic context (i.e., not from the command line) is something like this:
                                     break
                 print()
         elif query in ['o', 'options']:
-            gprint(gorp_options)
+            from gorp.option_docs import option_descriptions
+            gprint(option_descriptions)
         elif query in ['dir','d']:
             print(os.getcwd())
             return
@@ -171,6 +172,13 @@ programmatic context (i.e., not from the command line) is something like this:
                         print("No such option in DEFAULT_OPTIONS.")
                 globals().update(DEFAULT_OPTIONS)
                 globals()['DEFAULT_OPTIONS'] = DEFAULT_OPTIONS
+        elif re.match("\s*-g", query):
+            # -g option, read in a gorp script and run its commands.
+            script_name = re.sub("\s*-g\s*", '', query) 
+            with open(script_name) as f:
+                queries = re.split('\r?\n', f.read())
+                for script_query in queries:
+                    self.receive_query(script_query)
         else: # it's either a normal Gorp query or syntactically invalid
             splitquery = [x.strip() for x in query.split('-}}', 1)]
             resultset = None
@@ -202,6 +210,15 @@ programmatic context (i.e., not from the command line) is something like this:
             # again
             after_q_subqueries = after_q_subqueries[::-1]
             GorpLogger.debug(before_q_subqueries, after_q_subqueries)
+            if '-sed' in after_q_subqueries[-1][0]:
+                # this implements linux "sed" basically
+                # "(<subqueries> -}})? <options> -sed 'regex//repl' /dirname" is equivalent 
+                # to "(<subqueries> -}})? <options> 'regex' /dirname -}} -u 'x sub '`regex//repl`'"
+                sed_options, regex_repl, sed_dirname = after_q_subqueries[-1]
+                new_sed_options = sed_options.replace("-sed", "")
+                Regex, Repl = regex_repl.split('//')
+                after_q_subqueries[-1] = (new_sed_options, Regex, sed_dirname)
+                after_q_subqueries.append(('-u', f"x sub `{regex_repl}`", ''))
             if before_q_subqueries:
                 #after_query_as_string = ''.join(''.join(q) for q in after_q_subqueries)
                 # get the union of the resultsets from the two GorpHandlers created here
@@ -247,7 +264,7 @@ programmatic context (i.e., not from the command line) is something like this:
                 second_handler.process_final_resultset()
                 self.old_queries[f'q{len(self.old_queries)+1}'] = second_handler
                 self.old_queries['prev'] = second_handler
-            else:
+            else: # only one query, no -q option
                 self._Gorp(after_q_subqueries, resultset)
 
 # should think about using argparse to help with the documentation of the gorp options
@@ -321,8 +338,19 @@ GorpHandlers should only be created by a GorpSession.'''
         self.k = 'k' in self.all_options
         self.w = 'w' in self.options[-1]
         self.u = 'u' in self.options[-1]
-        self.z = 'z' in self.options[-1]
+        self.z = any(x[0]=='z' for x in self.options[-1])
         if self.w or self.u or self.z:
+            if self.z:
+                import zipfile
+                if 'zb' in self.options[-1]:
+                    self.zip_compression = zipfile.ZIP_BZIP2
+                elif 'zl' in self.options[-1]:
+                    self.zip_compression = zipfile.ZIP_LZMA
+                else:
+                    self.zip_compression = zipfile.ZIP_STORED
+                    # this is the default; it means no compresssion
+                # may also add support for gzip, but only lzma and bzip are in
+                # the standard Lib.
             if self.u:
                 self.replacement_func = compute(self.regexes[-1])
             self.options = self.options[:-1]
@@ -428,9 +456,7 @@ down the resultset'''
             with zipfile.ZipFile(write_to_name, 
                                  mode = 'w', # 'x' mode is like 'w', but raises error
                                              # if file already exists
-                                 compression = zipfile.ZIP_STORED,
-                                 # ZIP_STORED is default; it means no compression at all
-                                 # ZIP_LZMA and ZIP_BZIP2 may be good alternatives
+                                 compression = self.zip_compression
                                  ) as zf:
                 if len(self.resultset) > 1:
                     files = make_relpaths(self.resultset)
@@ -652,6 +678,10 @@ class FileReader:
         self.regex = regex
 
         self.a = ('a' in self.options)
+        self.b = ('b' in self.options) # read raw bytes of any file
+        if self.b:
+            regex = regex.encode()
+            self.regex = regex
         self.docx = ('docx' in self.options) and (not import_warnings['docx'][0])
         self.pdf = ('pdf' in self.options) and (not import_warnings['pdfminer'][0])
         self.xl = ('xl' in self.options) and (not import_warnings['openpyxl'][0])
@@ -822,6 +852,12 @@ class FileReader:
             if bool(self.f_goodness_condition(rel_fname)) ^ self.v:
                 self.resultset.setdefault(file, 0)
             return
+        elif self.b: # read any file's raw bytes
+            if os.path.isdir(file):
+                return
+            with open(file, 'rb') as f:
+                text = f.read()
+            lines = enumerate(re.split(b'\r?\n', text))
         elif self.pdf and ext == 'pdf':
             try:
                 global pdf_textcache
@@ -846,7 +882,7 @@ class FileReader:
                         bad_text_files.add(file)
                         return
                 lines = [(ii, para.text) for ii,para in enumerate(doc.paragraphs)]
-                text = 'dummy text'
+                text = 'dummy text' # to avoid raising error on "del text"
             except ImportError:
                 warn_first_import_error('docx')
         elif self.xl and (ext in {'xlsx', 'xlsm', 'xltx', 'xltm'}):
@@ -916,7 +952,10 @@ class FileReader:
                             return
                     except ImportError:
                         warn_first_import_error('yaml')
-                elif self.j and ext == 'json':
+                elif self.j and ext == 'json': # in {'json', 'ipynb'}:
+                    # yes, Jupyter notebooks are JSON documents!
+                    # but this may lead to unexpected results for most people
+                    # so for now we stick with only 'json' extensions.
                     try:
                         docs = json.loads(text)
                     except json.decoder.JSONDecodeError: 

@@ -197,7 +197,28 @@ def test_update():
                 f"Didn't update text of '{fname}' correctly to {correct_new_text} on -i -r '^GUT' /. -}}}} '\d' -}}}} -u 'x sub `file//FILLE`'\nInstead updated to {new_text}"
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 2: test updating fnames, with recursive search
+        # TEST 2: test "sed" option
+        #~~~~~~~~~~~~~~~~~~~~~
+        query = "-i -r '^GUT' /. -}} -sed '\d//BL4H'"
+        session.receive_query(query)
+        new_text_all_files = Orddict(get_text_all_files())
+        assert len(new_text_all_files) == len(og_text_all_files), \
+            f"Number of files changed from {len(og_text_all_files)} to {len(new_text_all_files)} when U_OPTION_OVERWRITES was True"
+        fnames_changed = {os.path.join(newdirname, 'GUT)enTHARST.js')}
+        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(),new_text_all_files.items()):
+            assert og_fname == new_fname, \
+                f"Filename was changed from {og_fname} to {new_fname} when -u option should not have been changing filenames"
+            if og_fname in fnames_changed:
+                continue
+            assert og_text == new_text, f"Text of {og_fname} was changed from {og_text} to {new_text} when it should not have been changed by \"{query}\""
+        for fname in fnames_changed:
+            correct_new_text = re.sub('\d', 'BL4H', og_text_all_files[fname])
+            new_text = new_text_all_files[fname]
+            assert new_text == correct_new_text, \
+                f"Didn't update text of '{fname}' correctly to {correct_new_text} on \"{query}\"\nInstead updated to {new_text}"
+        og_text_all_files = Orddict(get_text_all_files())
+        #~~~~~~~~~~~~~~~~~~~~~
+        # TEST 3: test updating fnames, with recursive search
         #~~~~~~~~~~~~~~~~~~~~~
         session.receive_query("-f -r 'i[lt]e' -}} -u 'x sub `file//FILLE`'")
         new_text_all_files = Orddict(get_text_all_files())
@@ -221,7 +242,7 @@ def test_update():
                 f"Updated text of '{fname}'to {new_text} on -f -r 'i[lt]e' -}}}} -u 'x sub `file//FILLE`'\nNo update should have been made; this query should only change filenames."
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 3: test updating non-text fnames
+        # TEST 4: test updating non-text fnames
         #~~~~~~~~~~~~~~~~~~~~~
         og_listdir = set(os.listdir()) | set(os.path.join('subdir', x) for  x in os.listdir('subdir'))
         session.receive_query("-a 'dict' /subdir -}} -u 'x sub `alloc//Moloch`'")
@@ -230,8 +251,7 @@ def test_update():
         assert len(new_text_all_files) == len(og_text_all_files), \
             f"Number of files changed from {len(og_text_all_files)} to {len(new_text_all_files)} when U_OPTION_OVERWRITES was True"
         fname_changed = os.path.join('subdir', "dict size vs memory allocated.png")
-        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(),
-                                                            new_text_all_files.items()):
+        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(), new_text_all_files.items()):
             if og_fname == fname_changed:
                 continue
             assert og_fname == new_fname, \
@@ -242,7 +262,7 @@ def test_update():
             f"-u option did not correctly change {fname_changed} to {new_fname} with -a 'dict' /subdir -}} -u 'x sub `alloc//Moloch`'"
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 4: test updating dirnames; this shouldn't do anything
+        # TEST 5: test updating dirnames; this shouldn't do anything
         #~~~~~~~~~~~~~~~~~~~~~
         og_listdir = set(os.listdir()) | set(os.path.join('subdir', x) for  x in os.listdir('subdir'))
         session.receive_query("-d -r 'fjerejw' -}} -u 'x sub `dir//dar`'")
@@ -251,8 +271,7 @@ def test_update():
         assert len(new_text_all_files) == len(og_text_all_files), \
             f"Number of files changed from {len(og_text_all_files)} to {len(new_text_all_files)} when U_OPTION_OVERWRITES was True"
         fnames_changed = set()
-        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(),
-                                                            new_text_all_files.items()):
+        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(), new_text_all_files.items()):
             assert og_fname == new_fname, \
                 f"Filename was changed from {og_fname} to {new_fname} when -u option should not have been changing that filename"
             assert og_text == new_text, f"Text of {og_fname} was changed from {og_text} to {new_text} when it should not have been changed by -i -r '^GUT' /. -}} '\d' -}} -u 'x sub `file//FILLE`'"
@@ -260,7 +279,7 @@ def test_update():
         assert not fname_changes, f"The names {fname_changes} occurred when the query shouldn't have done anything."
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 5: test updating dirnames; this should change a name
+        # TEST 6: test updating dirnames; this should change a name
         #~~~~~~~~~~~~~~~~~~~~~
         og_listdir = set(os.listdir()) | set(os.path.join('subdir', x) for  x in os.listdir('subdir'))
         session.receive_query("-d -r 'sub' -}} -u 'x sub `dir//dar`'")
@@ -279,7 +298,7 @@ def test_update():
         assert ('subdir' not in new_listdir) and ('subdar' in new_listdir), f"The names {fname_changes} occurred when the query shouldn't have done anything."
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 6: test changing YAML when file constraints are in path
+        # TEST 7: test changing YAML when file constraints are in path
         #~~~~~~~~~~~~~~~~~~~~~
         if yaml:
             og_listdir = set(os.listdir()) | set(os.path.join('subdar', x) for  x in os.listdir('subdar'))
@@ -289,8 +308,7 @@ def test_update():
             assert len(new_text_all_files) == len(og_text_all_files), \
                 f"Number of files changed from {len(og_text_all_files)} to {len(new_text_all_files)} when U_OPTION_OVERWRITES was True"
             fname_changed = 'RAMMSTeIN 10.yaml'
-            for (og_fname,og_text),(new_fname,new_text) in zip(og_text_all_files.items(),
-                                                                new_text_all_files.items()):
+            for (og_fname,og_text),(new_fname,new_text) in zip(og_text_all_files.items(), new_text_all_files.items()):
                 if os.path.basename(og_fname) == fname_changed:
                     continue
                 assert og_fname == new_fname, \
@@ -302,7 +320,7 @@ def test_update():
                     f"'RAMMSTeIN 10.yaml' was not correctly updated from {bad_json} to {bad_yaml}."
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 7: test changing files when U_OPTION_OVERWRITES is False
+        # TEST 8: test changing files when U_OPTION_OVERWRITES is False
         #~~~~~~~~~~~~~~~~~~~~~
         og_listdir = set(os.listdir()) | set(os.path.join('subdar', x) for  x in os.listdir('subdar'))
         session.receive_query("DEFAULTS.U_OPTION_OVERWRITES = False")
@@ -312,19 +330,18 @@ def test_update():
         assert fname_added in new_text_all_files, \
             '-u option did not correctly create a new file with incremented fname when U_OPTION_OVERWRITES was False'
         new_file_text = new_text_all_files.pop(fname_added)
-        correct_new_text = 'this is only the 6^th test FILLE\nGUT)enTHARST.js'
+        correct_new_text = 'this is only the BL4H^th test FILLE\nGUT)enTHARST.js'
         assert new_file_text == correct_new_text, \
             f"-u option did not correctly change the file text from '{og_text_all_files['GUT)enTHARST.js']}' to '{correct_new_text}'\nInstead it was changed to {new_file_text}"
         assert len(new_text_all_files) == len(og_text_all_files), \
             f"The number of files changed from {len(og_text_all_files)} to {len(new_text_all_files)} when U_OPTION_OVERWRITES was True"
-        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(),
-                                                            new_text_all_files.items()):
+        for (og_fname, og_text), (new_fname, new_text) in zip(og_text_all_files.items(), new_text_all_files.items()):
             assert og_fname == new_fname, \
                 f"Filename was changed from {og_fname} to {new_fname} when -u option should not have been changing filenames"
             assert og_text == new_text, f"Text of {og_fname} was changed from {og_text} to {new_text} when it should not have been changed by -i '^GUT' /. -}} '\d' -}} -u 'x sub `file//FILLE`'"
         og_text_all_files = Orddict(get_text_all_files())
         #~~~~~~~~~~~~~~~~~~~~~
-        # TEST 8: test changing JSON files when -j option preceded by -f option
+        # TEST 9: test changing JSON files when -j option preceded by -f option
         #~~~~~~~~~~~~~~~~~~~~~
         og_listdir = set(os.listdir()) | set(os.path.join('subdar', x) for  x in os.listdir('subdar'))
         session.receive_query("-f -r 'M{2,3}S' -}} -j 'zz^j~~@..~~@\d$vvnn:' -}} -u 'str(x/4.5)'")

@@ -3,6 +3,7 @@ from .gprint import gprint
 
 option_descriptions = {
 "a": "-a(ll file types, names only)",
+"b": "-b (read all files, regardless of type, as raw bytes)",
 "c": "-c(ount occurrences of pattern)",
 "d": "-d(irectory names only)",
 "docx": "-docx (read text of Word documents)",
@@ -23,13 +24,14 @@ option_descriptions = {
 "q": "-q (get union (Qnion?) of two resultsets)",
 "r": "-r(ecursive search)",
 "s": "-s(izes of files found; sorts files by size descending)",
+"sed": '''-sed (Find regex and replace with repl in text files. The correct syntax is "(other_queries -}})? <options> -sed 'regex//repl'".)''',
 "t": "-t (number of files found (and total size if -s arg used)",
 "u": "-u(pdate all files or their contents according to some function)",
 "v": "-v (display only things that DON'T match)",
 "w": "-w (write results of query to a JSON or YAML file)",
 "x": "-x (use XPath or CSS selectors to navigate XML and HTML files)",
 "y": "-y (read YAML files as YAML, using gorp.jsonpath. See -j option documentation)",
-"z": "-z (write copies of all files found to a Zip archive at target location)"
+"z": "-z[lb]? (write copies of all files found to a Zip archive at target location with optional BZIP or LZMA compression)"
 }
 
 
@@ -50,6 +52,11 @@ DEFAULTS.U_OPTION_OVERWRITES determines whether the -u option overwrites files w
 DEFAULTS.PROMPT_U_OPTION determines whether there's an interactive prompt that considers
     each edit on a case-by-case basis.''',
     
+    'b': '''Does not work with any options other than ['-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v'].
+Added in version 0.2.5.''',
+    
+    'z': '''-zb and -zl variants for BZIP and LZMA compression added in version 0.2.5.''',
+    
     'e': '''The syntax is "-e <other options> '<regex>' /<fname>.(json|yaml)".
 fname.json (or fname.yaml) should contain a single array of valid filenames
 or a dict with valid filenames as keys. A typical use of the -e option would
@@ -60,8 +67,9 @@ and then read it in the future with the -e option.''',
 extensions not in the following list:
 {gprint(textTypeFiles, str)}''',
 
-    'g': '''The syntax for the -g option is "python -m gorp -g <text file name>". 
-This option can only be used from the command line.''',
+    'g': '''The syntax for the -g option is "python -m gorp -g <text file name>".
+Added in version 0.2.4 for command line use only.
+Added for general use in version 0.2.5.''',
     
     'docx': "Gets the text only. No formatting information is extracted.",
     

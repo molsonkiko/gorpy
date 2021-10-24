@@ -25,6 +25,7 @@ gorp/jsonpath/mutate.py
 gorp/jsonpath/parser.py
 gorp/test/__init__.py
 gorp/test/main.py
+gorp/test/test_b_option.py
 gorp/test/test_e_w_options.py
 gorp/test/test_jsonpath.py
 gorp/test/test_ku_options.py

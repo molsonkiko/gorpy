@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: gorpy
-Version: 0.2.4
+Version: 0.2.5
 Summary: Grep tool with extensions for reading files in many different ways
 Home-page: https://github.com/molsonkiko/gorpy
 Author: Mark Johnston Olson
@@ -88,4 +88,9 @@ Other stuff
 
 TODO: add code coverage link (the below link is broken)
 (https://codecov.io/github/URL-OF-PROJECT?branch=master)](https://codecov.io/OTHER-URL-OF-PROJECT)
+
+
+![gorpy logo](https://github.com/molsonkiko/gorpy/blob/main/gorpy_logo_small.PNG?raw=true)
+
+_gorpy_logo.PNG and gorpy_logo_small.PNG modified from https://commons.wikimedia.org/wiki/File:Gorp.jpg and https://www.python.org/static/community_logos/python-logo-master-v3-TM.png_
 

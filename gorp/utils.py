@@ -15,8 +15,6 @@ default_options_fname = os.path.join(gorpdir, "DEFAULT_OPTIONS.json")
 
 if sys.version_info.minor < 8 or sys.version_info.major < 3:
     from collections import OrderedDict as Orddict
-    # to be clear: the sys.version_info.major < 3 is there for completeness only.
-    # No attempt at all is being made to make this package compatible with Python 2.
 else:
     Orddict = dict # regular dicts remember insertion order as of Python 3.7
 
@@ -32,7 +30,11 @@ INITIAL_DEFAULT_OPTIONS = {'PDF_PAGE_LIMIT': 100,
                            'PROMPT_U_OPTION': True,
                            "U_OPTION_OVERWRITES": True,
                            "ALLOW_REMOVE_TREES": False,
-                           'bad_text_files': set()} #this is how they are initialized
+                           'bad_text_files': set()} 
+                           #this is how they are initialized
+# Could consider including pdf_textcache.json in bad_text_files, because it
+# doesn't include particularly useful info and it's guaranteed to have a ton
+# of text on a single line.
 
 try:
     with open(default_options_fname) as f:
@@ -50,9 +52,8 @@ globals().update(DEFAULT_OPTIONS)
 
 
 def is_iterable(x):
-    '''Returns True for iterables other than strings and False for strings and
-    non-iterables'''
-    return hasattr(x,'__iter__') and not isinstance(x,str)
+    '''Returns True for all iterables except str and bytes, else False.'''
+    return hasattr(x,'__iter__') and not isinstance(x, (str, bytes))
 
 
 # add your favorite text-type file extensions here!

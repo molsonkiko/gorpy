@@ -8,22 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### To Be Added
 
+- Allow '-u' option to be used to update XML files with the '-x' option, and possibly all files with the '-b' option.
+
 - Add "tab" option for reading tabular files like CSV, TSV and Excel.
 tabular_excel.py is in gorp as a placeholder.
 
 - For the "tab" option to be really useful, the -w option would have to be 
 able to write to CSV and similar as well.
 
-- Add 'b' option to read raw bytecode in a manner (hopefully) similar to Unix
-grep's 'a' option.
-
 - Determine minimum version of all dependencies and optional dependencies, and
 add specifications where appropriate.
  
 ### To Be Changed
 
-- Allow -g option to be used within a Python program or a gorp interactive
-session.
+- Improve gorp.jsonpath.aggregate. Ideas include allowing aggregation by the *values* of fields, rather than just by *keys*.
  
 ### To Be Fixed
  
@@ -32,7 +30,30 @@ time of writing:
 Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
- 
+
+## [0.2.5] - 2021-10-23
+
+gorp version 0.2.5 is now available on the Python package index. 
+It has been tested for Python 3.6 to 3.9.
+
+### Added
+
+- "-b" option, which allows you to read raw bytecode of files as if they were text documents.
+
+- The "-z" option for copying files to a ZIP archive now allows for BZIP2 and LZMA compression by calling "-zb" or "-zl", respectively. The default "-z" is still no compression at all.
+
+- "-sed" option for more easily searching for and replacing patterns in text files. This is similar in concept to Linux sed. "(<previous queries> -}})? <options> -sed '<regex>//<repl>' /dirname" means you search all files in dirname (or in the resultset returned by previous queries if there are any) for <regex> and replace every instance with <repl>. See the documentation for the "-u" option and gorp.readfiles.GorpHandler.update(), which this calls behind the scenes.
+
+### Changed
+
+- The "-g" option for running a sequence of commands in a gorp script can now be called from within a Gorp Session.
+
+- The is_iterable() function from gorp.utils now returns False when called on `bytes` objects, in line with how it treats `str` objects. This is probably what users would expect anyway.
+
+### Fixed
+
+- Typos in gorp.jsonpath.aggregate documentation.
+
 ## [0.2.4] - 2021-10-08
   
 gorp version 0.2.4, which contains gorp.jsonpath 0.2.0, is now available on the
@@ -40,7 +61,7 @@ Python package index. It has been tested for Python 3.6 to 3.9.
  
 ### Added
 
-- 'g' option for reading a series of gorp directives from a text file.
+- '-g' option for reading a series of gorp directives from a text file.
 Currently this can only be done from the command line, not during an
 interactive session or while working in a Python shell. This will change soon.
 

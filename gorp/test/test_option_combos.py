@@ -3,7 +3,7 @@ import itertools
 
 
 def get_combos():
-    '''As of 9/29/2021, gorp tolerates all 1981 possible combinations of
+    '''As of this release, gorp tolerates all 1981 possible combinations of
 the options ['-a', '-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v','-f', '-d'].
 I haven't tested all permutations, because there are 986,410 permutations.
 This has been tested on Python 3.6 - 3.9.

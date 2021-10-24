@@ -32,7 +32,7 @@ design my own module to address this problem.
 """
 import re
 import json
-from .utils import funcname
+from .utils import funcname, is_iterable
 
 bad_json = {'a': False,
  'b': '3',
@@ -44,10 +44,6 @@ bad_json = {'a': False,
  '9"a"': 2,
  'blutentharst': ['\n\'"DOOM" BOOM, AND I CONSUME\', said Bludd, the mighty Blood God.\n\t',
   True]} # for testing
-
-def is_iterable(x):
-    '''True if x is a non-string iterable, False otherwise'''
-    return (not isinstance(x, str)) and hasattr(x, '__iter__')
 
 
 def bracket_of_itbl(x, jsonify, start = True):
