@@ -218,7 +218,12 @@ programmatic context (i.e., not from the command line) is something like this:
                 new_sed_options = sed_options.replace("-sed", "")
                 Regex, Repl = regex_repl.split('//')
                 after_q_subqueries[-1] = (new_sed_options, Regex, sed_dirname)
+                if '-i' in new_sed_options:
+                    # need to ensure that the re.sub update is also
+                    # case-insensitive
+                    regex_repl = '(?i)' + regex_repl
                 after_q_subqueries.append(('-u', f"x sub `{regex_repl}`", ''))
+                GorpLogger.debug(after_q_subqueries)
             if before_q_subqueries:
                 #after_query_as_string = ''.join(''.join(q) for q in after_q_subqueries)
                 # get the union of the resultsets from the two GorpHandlers created here
@@ -479,6 +484,8 @@ down the resultset'''
                     fileLineCounts[key] = len(self.resultset[key])
                 self.resultset =  fileLineCounts
             elif self.h:
+                if self.tab or self.xl:
+                    raise NotImplementedError("The '-tab' and '-xl' options cannot be used in combination with the '-h' option for combining results from all files without filenames.")
                 if self.n: 
                     linelistWithNums={}
                     for key in self.resultset:
@@ -489,7 +496,9 @@ down the resultset'''
                     for key in self.resultset:
                         linelist.extend(self.resultset[key].values())
                     self.resultset =  linelist
-            elif not self.n:
+            elif not (self.n or self.readers[-1].tab or self.readers[-1].xl):
+                # DataFrames can't really be conveniently displayed except by
+                # their default string representations.
                 self.resultset = {fname: list(lines.values()) \
                                         for fname, lines in self.resultset.items()}
             if self.print_output:
@@ -703,6 +712,7 @@ class FileReader:
         self.r = ('r' in self.options)
         self.s = ('s' in self.options)
         # self.t = ('t' in self.options) # see self.k
+        self.tab = ('tab' in self.options)
         # self.u = ('u' in self.options) # see self.k
         self.v = ('v' in self.options)
         self.w = ('w' in self.options)
@@ -719,9 +729,10 @@ class FileReader:
                     # GorpLogger.error(ex)
                 continue
         
-        if self.j or self.y:
+        if self.j or self.y or self.tab or self.xl:
             from .jsonpath import JsonPath
             self.jsonpath = JsonPath(self.regex)
+            # print(self.jsonpath)
         else:
             self.jsonpath = None
         # print(files)
@@ -885,33 +896,10 @@ class FileReader:
                 text = 'dummy text' # to avoid raising error on "del text"
             except ImportError:
                 warn_first_import_error('docx')
-        elif self.xl and (ext in {'xlsx', 'xlsm', 'xltx', 'xltm'}):
-            # may also want to allow attempts to read 'xlsb', 'xls',
-            # and 'xlt' files.
-            try:
-                import openpyxl
-                wkbk = openpyxl.open(file)
-                all_cells = {}
-                self.resultset[file] = {}
-                for ii, wksht in enumerate(wkbk):
-                    for col in wksht.columns:
-                        # the iteration is fairly fast: probably about 1 
-                        # microsecond per cell, so perhaps 1 second for 100MB 
-                        # worth of workbooks.
-                        # Of course, that's not counting the time required to 
-                        # check the goodness_condition.
-                        for cell in col:
-                            if self.goodness_condition(cell.value):
-                                self.resultset[(ii, col, cell.row)] = cell.value
-                if not self.resultset[file]:
-                    del self.resultset[file]
-            except ImportError:
-                warn_first_import_error('openpyxl')
-            return
         elif self.x:
             # although XML and HTML documents are technically textTypeFiles,
-            # etree.fromstring(text, parser) tends to crash when reading XML and 
-            # etree.parse(fname, parser) seems to be more reliable.
+            # etree.fromstring(text, parser) tends to crash when reading XML 
+            # and etree.parse(fname, parser) seems to be more reliable.
             if isinstance(ext, str) and re.search('xm|ht', ext):
                 try:
                     from .x_option import xpath_to_element_text
@@ -925,6 +913,40 @@ class FileReader:
                 except ImportError:
                     warn_first_import_error('lxml')
             return
+        elif self.xl and (ext in {'xlsx', 'xlsm', 'xltx', 'xltm'}):
+            # may also want to allow attempts to read 'xlsb', 'xls',
+            # and 'xlt' files.
+            try:
+                from .tabular_excel import read_excel, pd
+                docs = read_excel(file)
+            except ImportError:
+                warn_first_import_error('openpyxl')
+            if pd:
+                # read_excel returns a dict mapping sheet names to DataFrames
+                # Unfortunately, gorp.jsonpath can't handle DataFrames nested
+                # inside other iterables, only DataFrames by themselves
+                path_obj_map = {}
+                for sheetname, df in docs.items():
+                    self.jsonpath.add_json(df)
+                    try:
+                        results = self.jsonpath.extract()
+                        # TODO: make jsonpath.aggregate work for DataFrames 
+                        # as well
+                        if not results.empty:
+                            path_obj_map[sheetname] = results
+                    except:
+                        return
+                return
+            self.jsonpath.add_json(docs)
+            if self.jsonpath.aggregator is not None:
+                # use the aggregate function of jsonpath to aggregate the
+                # values in the json, e.g., by summing them
+                path_obj_map = self.jsonpath.aggregate()
+            else:
+                path_obj_map = self.jsonpath.extract()
+            if path_obj_map:
+                self.resultset.setdefault(file, {})
+                self.resultset[file].update(path_obj_map)
         elif ext in textTypeFiles and file not in bad_text_files: 
             # these are all text-type file extensions
             if self.f:
@@ -937,7 +959,7 @@ class FileReader:
                 GorpLogger.info(f"{file} has text-type ext {ext}, but bad encoding")
                 bad_text_files.add(file)
                 return
-            if self.y or self.j:
+            if self.j or self.y or self.tab or self.xl:
                 if self.y and (ext in {'yaml', 'yml'}):
                     try:
                         import yaml
@@ -961,6 +983,15 @@ class FileReader:
                     except json.decoder.JSONDecodeError: 
                         GorpLogger.info(f"JSONDecodeError on file {file}")
                         return
+                elif self.tab and ext in {'tsv', 'csv', 'txt'}: 
+                    # read a csv or other tabular file
+                    from .tabular_excel import read_tabular
+                    try:
+                        docs = read_tabular(file)
+                    except:
+                        # document is not tabular most likely
+                        return
+                    text = ''
                 else: # not self.a JSON or YAML file
                     return
                 del text
@@ -971,14 +1002,23 @@ class FileReader:
                     path_obj_map = self.jsonpath.aggregate()
                 else:
                     path_obj_map = self.jsonpath.extract()
+                if 'DataFrame' in str(type(path_obj_map)):
+                    # the truth value of a DataFrame is ambiguous, so the line
+                    # "if path_obj_map:" raises an error for DataFrames.
+                    if path_obj_map.empty:
+                        return
+                    self.resultset.setdefault(file, {})
+                    self.resultset[file] = path_obj_map
+                    return
                 if path_obj_map:
                     self.resultset.setdefault(file, {})
                     self.resultset[file].update(path_obj_map) 
                 # TODO: note that if the 'w' option is used later
                 # to write these path_obj_map to self.a file, they must be 
-                # converted to {str(PATH): OB for PATH, OB in path_obj_map.items()})
-                # because the tuple keys used in path_obj_map are not valid keys 
-                # for JSON hashes or for YAML safe-dumped dicts.
+                # converted to {str(PATH): OB for PATH, OB in 
+                #       path_obj_map.items()})
+                # because the tuple keys used in path_obj_map are not valid 
+                # keys for JSON hashes or for YAML safe-dumped dicts.
                 return
             else: # any other text-type file
                 lines = enumerate(re.split('\r?\n', text))

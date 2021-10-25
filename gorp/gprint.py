@@ -116,6 +116,11 @@ NOTES:
             terminator = '\n'
         else:
             terminator = ',\n'
+        if re.search('DataFrame|Series', str(type(itbl))):
+            # The default string representation of DataFrames is much prettier
+            # than whatever gprint would do.
+            arr.append(repr(itbl) + terminator)
+            return
         isdict = isinstance(itbl, dict)
         arr.append(' '*indent*depth + bracket_of_itbl(itbl, jsonify) + '\n')
         for ii, e in enumerate(itbl):

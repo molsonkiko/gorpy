@@ -9,15 +9,15 @@ except:
 try:
     import openpyxl
 except:
-    openpyxl = None
+    openpyxl = None # already in gorp.readfiles.import_warnings
 
 sniffer = csv.Sniffer()
 
 
 def read_excel(fname, **kwargs):
     '''Returns either a dict mapping sheetnames to DataFrames or a dict mapping
-    (sheet name, row number, column number) to cell values, depending on whether or not
-    pandas is installed.'''
+sheet names to lists of lists representing worksheets, depending on whether
+or not pandas is installed.'''
     tab = None
     if pd:
         tab = pd.read_excel(fname, sheet_name = None, **kwargs)
@@ -25,17 +25,14 @@ def read_excel(fname, **kwargs):
         # If no argument is supplied, the default is to return a single DataFrame
         # for the first worksheet.
     elif openpyxl:
-        wkbk = openpyxl.open(file, **kwargs)
+        wkbk = openpyxl.open(fname, **kwargs)
         tab = {}
         for sheetname, wksht in zip(wkbk.sheetnames, wkbk):
-            for col in wksht.columns:
-                # the iteration is fairly fast: probably about 1 
-                # microsecond per cell, so perhaps 1 second for 100MB 
-                # worth of workbooks.
-                # Of course, that's not counting the time required to 
-                # check the goodness_condition.
-                for row, cell in enumerate(col):
-                    tab[sheetname, row, col] = cell.value
+            tab[sheetname] = []
+            for ii, col in enumerate(wksht.columns):
+                tab[sheetname].append([])
+                for cell in col:
+                    tab[sheetname][ii].append(cell.value)
     return tab
 
 
