@@ -4,8 +4,8 @@ import itertools
 
 def get_combos():
     '''As of this release, gorp tolerates all 1981 possible combinations of
-the options ['-a', '-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v','-f', '-d'].
-I haven't tested all permutations, because there are 986,410 permutations.
+the options ['-a', '-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v','-f', '-d', '-docx'].
+I haven't tested all permutations, because there are 479,001,600 permutations.
 This has been tested on Python 3.6 - 3.9.
 I also haven't really looked at all the outputs to make sure that every
 possible combination returns the *right* thing.
@@ -13,6 +13,11 @@ possible combination returns the *right* thing.
     os.chdir(os.path.join(gorpdir, 'testDir'))
     base_query = " 'yaml|meat|WAF{2}' /."
     gorptags = ['-a', '-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v', '-f', '-d']
+    try:
+        import docx
+        gorptags.append('-docx') # only try option if python-docx installed
+    except ImportError:
+        pass
     tag_combos = (c for combos in \
                   (itertools.combinations(gorptags,ii) for ii in range(9)) \
                   for c in combos)

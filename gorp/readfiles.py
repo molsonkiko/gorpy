@@ -344,7 +344,8 @@ GorpHandlers should only be created by a GorpSession.'''
         self.w = 'w' in self.options[-1]
         self.u = 'u' in self.options[-1]
         self.z = any(x[0]=='z' for x in self.options[-1])
-        if self.w or self.u or self.z:
+        self.mv = 'mv' in self.options[-1]
+        if self.w or self.u or self.z or self.mv:
             if self.z:
                 import zipfile
                 if 'zb' in self.options[-1]:
@@ -473,6 +474,8 @@ down the resultset'''
                     # But if there's only one file, this chops off everything.
                 for fname in files:
                     zf.write(fname)
+        if self.mv: # collect all files, copy them into a directory
+            pass
         if not (self.w or self.k or self.p or self.t or self.u):
             if self.s or self.m:
                 pass
@@ -889,11 +892,12 @@ class FileReader:
                 if file not in bad_text_files:
                     try:
                         doc = docx.Document(file)
+                        lines = [(ii, para.text) for ii,para in enumerate(doc.paragraphs)]
+                        text = 'dummy text' 
+                        # to avoid raising error on "del text"
                     except:
                         bad_text_files.add(file)
                         return
-                lines = [(ii, para.text) for ii,para in enumerate(doc.paragraphs)]
-                text = 'dummy text' # to avoid raising error on "del text"
             except ImportError:
                 warn_first_import_error('docx')
         elif self.x:
