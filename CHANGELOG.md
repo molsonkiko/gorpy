@@ -31,6 +31,17 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 
+## [0.3.0] - 2021-11-04
+
+### Added
+
+- "-tab" option for reading tabular text files (currently supports csv, tsv, 
+txt extensions). Syntax used is gorp.jsonpath. Can use pandas or builtin csv. Tests not implemented yet.
+
+### Fixed
+
+- Bug in docx option.
+
 ## [0.2.5] - 2021-10-23
 
 gorp version 0.2.5 is now available on the Python package index. 

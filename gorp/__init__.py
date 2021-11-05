@@ -26,4 +26,4 @@ from .readfiles import helpstring
 from .utils import DEFAULT_OPTIONS, PDF_PAGE_LIMIT, PROMPT_K_OPTION, PROMPT_U_OPTION, U_OPTION_OVERWRITES
 from . import jsonpath
 
-__version__ = '0.2.6'
+__version__ = '0.3.0'

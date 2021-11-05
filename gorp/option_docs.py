@@ -26,6 +26,7 @@ option_descriptions = {
 "s": "-s(izes of files found; sorts files by size descending)",
 "sed": '''-sed (Find regex and replace with repl in text files. The correct syntax is "(other_queries -}})? <options> -sed 'regex//repl'".)''',
 "t": "-t (number of files found (and total size if -s arg used)",
+"tab": "-tab (read tabular files (e.g. csv) using gorp.jsonpath. Supports pandas.",
 "u": "-u(pdate all files or their contents according to some function)",
 "v": "-v (display only things that DON'T match)",
 "w": "-w (write results of query to a JSON or YAML file)",
