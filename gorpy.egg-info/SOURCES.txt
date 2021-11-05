@@ -50,6 +50,7 @@ gorp/testDir/walnut/AHH_FRESH_MEAT.txt
 gorp/testDir/walnut/Bogo bucks.docx
 gorp/testDir/walnut/baseball.json
 gorp/testDir/walnut/blood4Bludd.htm
+gorp/testDir/walnut/hello world.py
 gorp/testDir/walnut/ln1 proofs.pdf
 gorp/testDir/walnut/mbox-short.txt
 gorp/testDir/walnut/silly_example_decap.csv

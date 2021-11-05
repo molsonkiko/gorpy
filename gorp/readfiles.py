@@ -487,7 +487,7 @@ down the resultset'''
                     fileLineCounts[key] = len(self.resultset[key])
                 self.resultset =  fileLineCounts
             elif self.h:
-                if self.tab or self.xl:
+                if self.readers[-1].tab or self.readers[-1].xl:
                     raise NotImplementedError("The '-tab' and '-xl' options cannot be used in combination with the '-h' option for combining results from all files without filenames.")
                 if self.n: 
                     linelistWithNums={}
