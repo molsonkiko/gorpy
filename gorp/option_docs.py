@@ -66,7 +66,7 @@ and then read it in the future with the -e option.''',
     
     'f': f'''This option filters filenames, and ignores filenames with 
 extensions not in the following list:
-{gprint(textTypeFiles, str)}''',
+{gprint(sorted(textTypeFiles), str)}''',
 
     'g': '''The syntax for the -g option is "python -m gorp -g <text file name>".
 Added in version 0.2.4 for command line use only.

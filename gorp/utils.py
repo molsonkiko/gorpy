@@ -73,6 +73,7 @@ textTypeFiles = {'bat',
  'java',
  'js',
  'json',
+ 'less', # LEan StyleSheets, a superset of CSS
  'log',
  'md',
  'py',
@@ -82,9 +83,12 @@ textTypeFiles = {'bat',
  'rmd',
  'rs',
  'rst', # ReStructuredText (e.g., Sphinx)
+ 'sass', # SASS (Syntactically Awesome StyleSheets), a cousin of CSS
+ 'scss', # also SASS
  'sh', # bash file for Linux
  'sql',
  'toml',
+ 'ts',
  'tsv',
  'txt',
  'xml',
