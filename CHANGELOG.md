@@ -31,6 +31,20 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 
+## [0.4.0] - 2022-02-23
+
+gorp version 0.4.0 is now available on the Python package index. 
+It has been tested for Python 3.6 to 3.9.
+
+### Added
+
+- "-m" and "-s" options now allow filtering by modification time and size, respectively. Use "python -m gorp doc m s" to see proper usage.
+- A few extensions like 'ts' and 'less' have been added to textTypeFiles.
+
+### Fixed
+
+- "python -m gorp doc f" now displays the text-type files ordered alphabetically.
+
 ## [0.3.2] - 2021-11-04
 
 gorp version 0.3.2 is now available on the Python package index. 

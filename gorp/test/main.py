@@ -8,6 +8,7 @@ from gorp.test import test_e_w_options
 from gorp.test import test_zip
 from gorp.test import test_x_option
 from gorp.test import test_b_option
+from gorp.test import test_s_m_options
 import doctest
 
 def main():
@@ -33,6 +34,8 @@ def main():
     test_x_option.main()
     print("===============\nTesting -b option for reading files as raw bytes")
     test_b_option.test_combo_results()
+    print("===============\nTesting -m and -s options for getting mod times and sizes of files")
+    test_s_m_options.main()
     
 if __name__ == '__main__':
     main()

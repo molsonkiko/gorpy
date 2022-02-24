@@ -32,6 +32,7 @@ gorp/test/test_ku_options.py
 gorp/test/test_option_combos.py
 gorp/test/test_pdf_option.py
 gorp/test/test_q_option.py
+gorp/test/test_s_m_options.py
 gorp/test/test_textcache.py
 gorp/test/test_x_option.py
 gorp/test/test_zip.py
