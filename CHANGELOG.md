@@ -31,6 +31,12 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 
+## [0.4.1] - 2022-02-24
+
+### Fixed
+
+- "doc m" correctly reflects that you CANNOT use "YYYY-MM-DD hh:mm:ss" datetimes, to filter modification times, and the most precision you can get is YYYY-MM-DD.
+
 ## [0.4.0] - 2022-02-23
 
 gorp version 0.4.0 is now available on the Python package index. 

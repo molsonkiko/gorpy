@@ -38,12 +38,11 @@ option_descriptions = {
 
 detailed_option_descriptions = {
     'm': '''You can get all files ordered by mod time with just '-m',
-    or (with version >=0.4.0) you can filter with '-m[><=]=<datetime>', where 
-    <datetime> is any datetime in YYYY-MM-DD hh:mm:ss format, 
-    or a fragment like yyyy-mm''',
+    or (with version >=0.4.0) you can filter with '-m[><=]=?<date>', where 
+    <date> is any date in YYYY-MM-DD format, or a fragment like yyyy-mm''',
     
     's': '''You can get all files ordered by size (desc) with just '-s',
-    or (with gorp version >=0.4.0) you can filter with '-s[><=]=<size>', 
+    or (with gorp version >=0.4.0) you can filter with '-s[><=]=?<size>', 
     where <size> is a number of bytes, which can be unitless or measured in 
     bytes, b, KB, MB, or GB''',
     
