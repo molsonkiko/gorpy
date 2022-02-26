@@ -331,8 +331,8 @@ GorpHandlers should only be created by a GorpSession.'''
         # print(f'{self.options = }')
         self.all_options = set(opt for opts in self.options for opt in opts)
         self.regexes = [x[1].replace('\\\'', '\'') for x in self.parsedQuery]
-        self.s = [x for x in self.all_options if x[0] == 's']
-        self.m = [x for x in self.all_options if x[0] == 'm']
+        self.s = [x for x in self.all_options if x[0] == 's' and x != 'sed']
+        self.m = [x for x in self.all_options if x[0] == 'm' and x != 'mv']
         self.k = 'k' in self.all_options
         self.w = 'w' in self.options[-1]
         self.u = 'u' in self.options[-1]
@@ -377,6 +377,7 @@ GorpHandlers should only be created by a GorpSession.'''
                                         self))
             self.resultset = self.readers[-1].resultset
         else:
+            self.dirName = os.getcwd()
             self.resultset = resultset
             
     def refine(self):
@@ -463,21 +464,31 @@ down the resultset'''
             import zipfile
             from gorp.zip_utils import make_relpaths
             write_to_name = increment_name(ext_checker(self.parsedQuery[-1][1], 'zip'))
-            with zipfile.ZipFile(write_to_name, 
+            curdir = os.getcwd()
+            try:
+                zf = zipfile.ZipFile(write_to_name, 
                                  mode = 'w', # 'x' mode is like 'w', but raises error
                                              # if file already exists
                                  compression = self.zip_compression
-                                 ) as zf:
-                if len(self.resultset) > 1:
-                    files = make_relpaths(self.resultset)
+                                 )
+                if not self.resultset:
+                    files = []
+                elif len(self.resultset) > 1:
+                    files, commondir = make_relpaths(self.resultset)
+                    os.chdir(commondir)
                 elif len(self.resultset) == 1:
                     files = [os.path.basename(f) for f in self.resultset]
+                    commondir = [os.path.dirname(f) for f in self.resultset][0]
+                    os.chdir(commondir)
                     # make_relpaths(files) finds the longest path shared by
                     # all paths in files, and truncates all those files to
                     # remove the redundant common part.
                     # But if there's only one file, this chops off everything.
                 for fname in files:
                     zf.write(fname)
+            finally:
+                os.chdir(curdir)
+                zf.close()
         if self.mv: # collect all files, copy them into a directory
             pass
         if not (self.w or self.k or self.p or self.t or self.u):
@@ -711,7 +722,7 @@ class FileReader:
         self.j = ('j' in self.options)
         # self.k = ('k' in self.options) # a post-processing option used on the final resultset
         self.l = ('l' in self.options)
-        self.m = [x for x in self.options if x[0] == 'm']
+        self.m = [x for x in self.options if x[0] == 'm' and x != 'mv']
         if self.m:
             m = self.m[0]
             try:
@@ -725,7 +736,7 @@ class FileReader:
         # self.p = ('p' in self.options) # see self.k comment
         # self.q = ('q' in self.options)
         self.r = ('r' in self.options)
-        self.s = [x for x in self.options if x[0] == 's']
+        self.s = [x for x in self.options if x[0] == 's' and x != 'sed']
         if self.s:
             s = self.s[0]
             try:

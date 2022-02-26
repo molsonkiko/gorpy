@@ -18,6 +18,8 @@ able to write to CSV and similar as well.
 
 - Determine minimum version of all dependencies and optional dependencies, and
 add specifications where appropriate.
+
+- add 'mv' option for moving files
  
 ### To Be Changed
 
@@ -31,11 +33,16 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 
-## [0.4.1] - 2022-02-24
+## [0.4.1] - 2022-02-25
+
+gorp version 0.4.1 is now available on the Python package index. 
+It has been tested for Python 3.6 to 3.10.
 
 ### Fixed
 
-- "doc m" correctly reflects that you CANNOT use "YYYY-MM-DD hh:mm:ss" datetimes, to filter modification times, and the most precision you can get is YYYY-MM-DD.
+- "doc m" (see option_docs.py) correctly reflects that you CANNOT use "YYYY-MM-DD hh:mm:ss" datetimes, to filter modification times, and the most precision you can get is YYYY-MM-DD.
+- "-s" option won't be auto-triggered when using "-sed" option.
+- The "-z" option for zipping files will now work when the query specifies a temporary working directory other than the directory in which the program was when the query was made. For example, queries like `-f 'py' /otherdir -}} -z 'blah.zip'` would previously raise a FileNotFoundError. They should no longer do that.
 
 ## [0.4.0] - 2022-02-23
 
