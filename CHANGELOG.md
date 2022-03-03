@@ -33,6 +33,20 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 
+## [1.0.0] - 2022-03-02
+
+gorp version 1.0.0 is now available on the Python package index.
+It has been tested for Python 3.6 to 3.10.
+
+### Changed
+
+- Changed the way PDF text is stored. Instead of using a JSON file, a sqlite database is now used. 
+- This has the added benefit of removing the optional dependency (for the pdf option) on sortedcollections.
+
+### Fixed
+
+- Previously, if pdf text for some filename "X" was cached in pdf_textcache.json, and the file "X" was later changed, the old version of its text that was originally cached would be used. This has been fixed, and now the modified version of the text will correctly overwrite the old text if it is determined that the file was modified. If the file was not modified, it will be left alone.
+
 ## [0.4.1] - 2022-02-25
 
 gorp version 0.4.1 is now available on the Python package index. 

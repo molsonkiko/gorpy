@@ -12,35 +12,28 @@ Currently get_text_by_page is the default function used for extracting PDF
 from pdfminer.high_level import extract_text, extract_pages, LAParams
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
-from .textcache import TextCache
-from .utils import DEFAULT_OPTIONS, PDF_PAGE_LIMIT, gorpdir, os
+from gorp.textcache import TextCache
+from gorp.utils import PDF_PAGE_LIMIT, gorpdir, os
 import functools
 
-pdftext_loc = os.path.join(gorpdir, 'pdf_textcache.json')
+pdftext_loc = os.path.join(gorpdir, 'pdf_textcache.sqlite')
 
-def retrieve_textcache(fname = pdftext_loc):
-    '''Requires TextCache from gorp.textcache.
-Extracting text from PDF's with pdfminer takes an INCREDIBLY long time (we're 
-talking at least 30 seconds to extract text from a 500-page document), so it 
-is much better to store the most recently retrieved PDF text in a TextCache, 
-which is basically a wrapper for a dict mapping fnames to text that tracks 
-size and recency of addition.
-    '''
-    try:
-        return TextCache.load(fname)
-    except FileNotFoundError:
-        return TextCache()
+pdf_textcache = TextCache(pdftext_loc)
 
-pdf_textcache = retrieve_textcache()
-
-def pagecount(document):
+def pagecount(fname):
     '''document: a PDFDocument object.
     Returns: an integer, the number of pages in the document.
 This takes 5-20% as long as extract_text, so it's worth checking first.'''
-    metadata = document.catalog
-    pgs = metadata['Pages']
-    pgdict = pgs.resolve()
-    return pgdict['Count']
+    f = open(fname, 'rb')
+    try:
+        parser = PDFParser(f)
+        document = PDFDocument(parser)
+        metadata = document.catalog
+        pgs = metadata['Pages']
+        pgdict = pgs.resolve()
+        return pgdict['Count']
+    finally:
+        f.close()
 
 
 def check_cache(pdf_analyzer):
@@ -50,20 +43,18 @@ The function returned by this decorator first checks the pdf_textcache for
     is over the limit, and only then does the expensive analysis.'''
     @functools.wraps(pdf_analyzer)
     def wrapper(fname, *args, **kwargs):
-        if fname in pdf_textcache:
-            text = pdf_textcache[fname]
-        else:
-            with open(fname, 'rb') as f:
-                parser = PDFParser(f)
-                document = PDFDocument(parser)
-                pagenum = pagecount(document)
-            if pagenum <= PDF_PAGE_LIMIT: # from DEFAULT_OPTIONS.json
-                # yes, extract_text really is that slow. We won't even TRY
-                # to parse documents that are too many pages (default max is 100).
+        text = pdf_textcache.get(fname)
+        if not text:
+            numpages = pagecount(fname)
+            # print(f'{numpages = }')
+            if numpages <= PDF_PAGE_LIMIT: # from DEFAULT_OPTIONS.json
+                # yes, extract_text really is that slow. We won't even TRY to
+                # parse documents that are too many pages (default max is 100).
                 text = pdf_analyzer(fname, *args, **kwargs)
                 pdf_textcache[fname] = text
             else:
                 return None
+        # print(f'{text = }')
         return text
     return wrapper
 

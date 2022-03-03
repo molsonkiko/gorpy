@@ -10,7 +10,6 @@ docx
 
 [pdf]
 pdfminer.six
-sortedcollections
 
 [tab]
 pandas

@@ -1,4 +1,4 @@
 __pycache__
 gorpy.egg-info
 DEFAULT_OPTIONS.json
-pdf_textcache.json
+pdf_textcache.sqlite

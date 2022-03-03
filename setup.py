@@ -9,7 +9,7 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md'))
 
 setup(
     name='gorpy',
-    version='0.4.1', # change this every time I release a new version
+    version='1.0.0', # change this every time I release a new version
     packages=['gorp',
               os.path.join('gorp', 'test'),
               os.path.join('gorp', 'jsonpath'),
@@ -24,7 +24,7 @@ setup(
         'python-dateutil',
     ],
     extras_require={
-        "pdf": ["pdfminer.six", "sortedcollections"],
+        "pdf": ["pdfminer.six"],
         "docs": ["sphinx", "sphinx-argparse"],
         "docx": ['docx'],
         'tab': ['pandas'],

@@ -79,11 +79,10 @@ programmatic context (i.e., not from the command line) is something like this:
         return self
     def close(self):
         '''Removes data associated with the session and writes DEFAULT_OPTIONS
-    and pdf_textcache to file.'''
+    to file.'''
         del self.old_queries
         pdf_textcache = globals().get('pdf_textcache')
         if pdf_textcache is not None:
-            pdf_textcache.dump(os.path.join(gorpdir, "pdf_textcache.json"))
             del pdf_textcache
         with open(default_options_fname, 'w') as f:
             DEFAULT_OPTIONS['bad_text_files'] = list(bad_text_files)
@@ -280,8 +279,6 @@ import_warnings = {
     'docx': [False, "python-docx (imported by 'import docx') is required for the 'docx' option, which allows reading of Word documents. Try installing with 'pip install python-docx'.\nDO NOT USE 'pip install docx'; that is a DIFFERENT LIBRARY."
     ],
     'pdfminer': [False, "pdfminer.six (imported by 'import pdfminer') is required for the 'pdf' option. Try installing with 'pip install pdfminer.six'.\nDO NOT USE 'pip install pdfminer'; that is a DIFFERENT LIBRARY."
-    ],
-    'sortedcollections': [False, "sortedcollections (imported by 'import sortedcollections') is required for the 'pdf' option. Try installing with 'pip install sortedcollections'."
     ],
     'openpyxl': [False, "openpyxl (imported by 'import openpyxl') is required for the 'xl' option, which allows reading of Excel files. Try installing with 'pip install openpyxl'."
     ],
@@ -921,7 +918,6 @@ class FileReader:
                 text = get_text_by_page(file)
             except ImportError:
                 warn_first_import_error('pdfminer')
-                warn_first_import_error('sortedcollections')
                 text = None
             if text is not None:
                 lines = (((ii, jj), line) for ii, page in enumerate(text) \
