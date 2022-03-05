@@ -32,12 +32,10 @@ time of writing:
 Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
+- DO NOT DOWNLOAD gorpy version 2.0.1 or 2.0.0 from test-PYPI! They both have bugs with the -x and -z options! Continue using 1.0.0 from PYPI.
 
 
-## [2.1.0] - 2022-03-04
-
-gorp version 2.1.0 is now available on the Python package index.
-It has been tested for Python 3.6 to 3.10.
+## [2.1.0] - ???
 
 ### Added
 
