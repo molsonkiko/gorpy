@@ -2,51 +2,49 @@ from .utils import textTypeFiles
 from .gprint import gprint
 
 option_descriptions = {
-"a": "-a(ll file types, names only)",
-"b": "-b (read all files, regardless of type, as raw bytes)",
-"c": "-c(ount occurrences of pattern)",
-"d": "-d(irectory names only)",
-"docx": "-docx (read text of Word documents)",
-"e": "-e (read a list of filenames from a JSON or YAML file)",
-"f": "-f(ilenames and directories only)",
-"g": "-g (execute a series of gorp commands written in a text file)",
-"h": "-h (display lines, not files)",
-"i": "-i (case insensitive)",
-"j": "-j (read JSON files as JSON, using gorp.jsonpath)",
-"k": "-k (kill [i.e. delete] all files found, pending user permission for each one",
-"l": "-l (list filenames)",
-"m": "-m (get last Modification time; sort files by most recent first)",
-"n": "-n (get paths/line Numbers of results found)",
-"num": "-<integer> (truncate resultset to length <integer>)", 
-"o": "-o (match only entire words)",
-"p": "-p (oPen all files in the final resultset with their default apps)",
-"pdf": "-pdf (read text of PDF files)",
-"q": "-q (get union (Qnion?) of two resultsets)",
-"r": "-r(ecursive search)",
-"s": "-s(izes of files found; sorts files by size descending)",
-"sed": '''-sed (Find regex and replace with repl in text files. The correct syntax is "(other_queries -}})? <options> -sed 'regex//repl'".)''',
-"t": "-t (number of files found (and total size if -s arg used)",
-"tab": "-tab (read tabular files (e.g. csv) using gorp.jsonpath. Supports pandas.",
-"u": "-u(pdate all files or their contents according to some function)",
-"v": "-v (display only things that DON'T match)",
-"w": "-w (write results of query to a JSON or YAML file)",
-"x": "-x (use XPath or CSS selectors to navigate XML and HTML files)",
-"y": "-y (read YAML files as YAML, using gorp.jsonpath. See -j option documentation)",
-"z": "-z[lb]? (write copies of all files found to a Zip archive at target location with optional BZIP or LZMA compression)"
+    "a": "-a(ll file types, names only)",
+    "b": "-b (read all files, regardless of type, as raw bytes)",
+    "c": "-c(ount occurrences of pattern)",
+    "d": "-d(irectory names only)",
+    "docx": "-docx (read text of Word documents)",
+    "e": "-e (read a list of filenames from a JSON or YAML file)",
+    "f": "-f(ilenames and directories only)",
+    "g": "-g (execute a series of gorp commands written in a text file)",
+    "h": "-h (display lines, not files)",
+    "i": "-i (case insensitive)",
+    "j": "-j (read JSON files as JSON, using gorp.jsonpath)",
+    "k": "-k (kill [i.e. delete] all files found, pending user permission for each one",
+    "l": "-l (list filenames)",
+    "m": "-m (get last Modification time; sort files by most recent first)",
+    "n": "-n (get paths/line Numbers of results found)",
+    "num": "-<integer> (truncate resultset to length <integer>)",
+    "o": "-o (match only entire words)",
+    "p": "-p (oPen all files in the final resultset with their default apps)",
+    "pdf": "-pdf (read text of PDF files)",
+    "q": "-q (get union (Qnion?) of two resultsets)",
+    "r": "-r(ecursive search)",
+    "s": "-s(izes of files found; sorts files by size descending)",
+    "sed": """-sed (Find regex and replace with repl in text files. The correct syntax is "(other_queries -}})? <options> -sed 'regex//repl'".)""",
+    "t": "-t (number of files found (and total size if -s arg used)",
+    "tab": "-tab (read tabular files (e.g. csv) using gorp.jsonpath. Supports pandas.",
+    "u": "-u(pdate all files or their contents according to some function)",
+    "v": "-v (display only things that DON'T match)",
+    "w": "-w (write results of query to a JSON or YAML file)",
+    "x": "-x (use XPath or CSS selectors to navigate XML and HTML files)",
+    "y": "-y (read YAML files as YAML, using gorp.jsonpath. See -j option documentation)",
+    "z": "-z[lb]? (write copies of all files found to a Zip archive at target location with optional BZIP or LZMA compression)",
 }
 
 
 detailed_option_descriptions = {
-    'm': '''You can get all files ordered by mod time with just '-m',
+    "m": """You can get all files ordered by mod time with just '-m',
     or (with version >=0.4.0) you can filter with '-m[><=]=?<date>', where 
-    <date> is any date in YYYY-MM-DD format, or a fragment like yyyy-mm''',
-    
-    's': '''You can get all files ordered by size (desc) with just '-s',
+    <date> is any date in YYYY-MM-DD format, or a fragment like yyyy-mm""",
+    "s": """You can get all files ordered by size (desc) with just '-s',
     or (with gorp version >=0.4.0) you can filter with '-s[><=]=?<size>', 
     where <size> is a number of bytes, which can be unitless or measured in 
-    bytes, b, KB, MB, or GB''',
-    
-    'u': '''The -u option updates text files or renames files and 
+    bytes, b, KB, MB, or GB""",
+    "u": """The -u option updates text files or renames files and 
     directories, and may use an interactive prompt.
 The general syntax is "subquery (-}} other_subquery)* -}} -u 'function'.
     If you want to edit text files sed-style, 'function' should be replaced with
@@ -60,59 +58,53 @@ Note that the -u option is not just a sed/mv workalike- it can also edit the ter
 DEFAULTS.U_OPTION_OVERWRITES determines whether the -u option overwrites files with the
     updated version or creates a new file with a filename incremented from the original.
 DEFAULTS.PROMPT_U_OPTION determines whether there's an interactive prompt that considers
-    each edit on a case-by-case basis.''',
-    
-    'b': '''Does not work with any options other than ['-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v'].
-Added in version 0.2.5.''',
-    
-    'z': '''-zb and -zl variants for BZIP and LZMA compression added in version 0.2.5.''',
-    
-    'e': '''The syntax is "-e <other options> '<regex>' /<fname>.(json|yaml)".
+    each edit on a case-by-case basis.""",
+    "b": """Does not work with any options other than ['-r', '-l', '-h', '-i', '-c', '-o', '-n', '-v'].
+Added in version 0.2.5.""",
+    "z": """-zb and -zl variants for BZIP and LZMA compression added in version 0.2.5.
+For version 2.0.1 and higher, the Z_OPTION_OVERWRITES and PROMPT_Z_OPTION
+options were added to DEFAULT_OPTIONS.json and the corresponding
+INITIAL_DEFAULT_OPTIONS in gorp.utils.
+- Similar to the -u option, the -z option now tests to see if a zip file with the given name already exists. If it does, and PROMPT_Z_OPTION is True, it will ask the user if they want to overwrite that file or create a new zip archive with an incremented name.
+- If the user agrees to overwrite, or if Z_OPTION_OVERWRITES is True, the file is overwritten.
+- If PROMPT_Z_OPTION is False and Z_OPTION_OVERWRITES is False, any name collision will be resolved by incrementing the filename without asking the user for input.""",
+    "e": """The syntax is "-e <other options> '<regex>' /<fname>.(json|yaml)".
 fname.json (or fname.yaml) should contain a single array of valid filenames
 or a dict with valid filenames as keys. A typical use of the -e option would
 be to first dump a bunch of filenames into a json/yaml file with the -w option
-and then read it in the future with the -e option.''',
-    
-    'f': f'''This option filters filenames, and ignores filenames with 
+and then read it in the future with the -e option.""",
+    "f": f"""This option filters filenames, and ignores filenames with 
 extensions not in the following list:
-{gprint(sorted(textTypeFiles), str)}''',
-
-    'g': '''The syntax for the -g option is "python -m gorp -g <text file name>".
+{gprint(sorted(textTypeFiles), str)}""",
+    "g": """The syntax for the -g option is "python -m gorp -g <text file name>".
 Added in version 0.2.4 for command line use only.
-Added for general use in version 0.2.5.''',
-    
-    'docx': "Gets the text only. No formatting information is extracted.",
-    
-    'x': '''See the documentation of 'lxml' and 'cssselect' to learn more.
+Added for general use in version 0.2.5.""",
+    "docx": "Gets the text only. No formatting information is extracted.",
+    "x": """See the documentation of 'lxml' and 'cssselect' to learn more.
 I am not very familiar with either package, and this option may be bugged without my
-    knowledge.''',
-    
-    'v': '''Don't make the mistake of assuming that the -v option on text
+    knowledge.""",
+    "v": """Don't make the mistake of assuming that the -v option on text
     will exclude all files that contain lines that DO match the regex.
 If a file contains some lines that DO match the regex and some that DON'T, the -v option
-    will get all the lines that don't match from that file.''',
-    
-    'pdf': '''Because extracting text from PDFs can take an extremely long time,
+    will get all the lines that don't match from that file.""",
+    "pdf": """Because extracting text from PDFs can take an extremely long time,
     gorp ignores all PDFs longer than 100 pages by default.
 DEFAULTS.PDF_PAGE_LIMIT controls this limit.
 After the text has been extracted for the first time, the text is stored in
     pdf_textcache.json, located in gorp's directory, and loaded whenever the pdf
     option is invoked in future sessions.
-This caching of text means that subsequent queries to the same file are very fast.''',
-
-    'k': '''Delete files found by queries.
+This caching of text means that subsequent queries to the same file are very fast.""",
+    "k": """Delete files found by queries.
 DEFAULTS.ALLOW_REMOVE_TREES determines whether the -k option can be used to delete
     entire directory trees. By default, the -k option can't touch directories at all.
 DEFAULTS.PROMPT_K_OPTION determines whether the user can see an interactive prompt and
-    decide on a case-by-case basis which files and directories they want to delete.''',
-    
-    'num': '''The integer can be positive or negative. For example, 
+    decide on a case-by-case basis which files and directories they want to delete.""",
+    "num": """The integer can be positive or negative. For example, 
 "-2 <query>" would get the first two files alphabetically that satisfy <query>,
 "-3 -s <query>" would get the three LARGEST files that satisfy <query>, and
-"--3 -s <query>" would get the three SMALLEST files that satisfy <query>.''',
-    
-    'j': [
-'''The -j and -y options are based on gorp.jsonpath, and specifically on
+"--3 -s <query>" would get the three SMALLEST files that satisfy <query>.""",
+    "j": [
+        """The -j and -y options are based on gorp.jsonpath, and specifically on
 JsonPath(query, json).extract().
 gorp.jsonpath has extensive documentation for programmatic applications,
     particularly parse_json_path, json_extract, JsonPath, Filter, and GlobalConstraint.
@@ -190,9 +182,8 @@ gorp> -j -n '9vvball' /bad_json.json # Everything after the 'vv' is a filter on 
     {
     ('9',): 'ball'
     }
-}''',
-
-'''############
+}""",
+        """############
 ## MATHEMATICAL EXPRESSIONS
 ############
 gorp> -j -n 'jub~~@uy~~@nn1:' /bad_json.json # the 'nn' flag turns on "math mode".
@@ -229,9 +220,8 @@ gorp> -j -n 'jub~~@uy~~@nn:vvnnstr(x)[0]==`n`' /bad_json.json
     {
     ('jub', 'uy', 2): nan
     }
-}''',
-
-'''############
+}""",
+        """############
 ## INEXACT MATCHES ON KEYS (WRONG)
 ############
 gorp> -j -n '^\d+$' /bad_json.json # this is a regex match on keys; 
@@ -256,9 +246,8 @@ gorp> -j 'zz^\d+$' /bad_json.json # zz turns on "fuzzy" matching of keys,
     ('6',): 7,
     ('9',): 'ball'
     }
-}''',
-
-'''############
+}""",
+        """############
 ## USING FILTERS TO MAKE ASSERTIONS ("CHECK")
 ############
 gorp> -j 'jub~~@yu~~uy' /bad_json.json 
@@ -305,9 +294,8 @@ gorp> -j -n '..~~@zz[5-8]' /bad_json.json # '..' turns on recursive search.
     ('jub', 'yu', 0, 1, 'm8'): 9,
     ('6',): 7
     }
-}''',
-
-'''############
+}""",
+        """############
 ## MULTIPLE CONSTRAINTS ON A SINGLE VALUE: ';;' FOR LOGICAL "OR"
 ############
 gorp> -j -n '6;;baz;;foo' /bad_json.json # the ';;' separates a list of options
@@ -336,9 +324,8 @@ gorp> -j -n '6&&baz&&foo' /bad_json.json # WHOOPS! The '&&' for bundling conditi
                     # works if we use the 'zz' flag to invoke fuzzy key matching.
 Traceback (most recent call last)
 ...
-gorp.jsonpath.aggregate.JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are allowed as key tests.''',
-
-'''############
+gorp.jsonpath.aggregate.JsonPathError: When not in fuzzy_keys mode, only IntRange slicers and ints are allowed as key tests.""",
+        """############
 ## GlobalConstraints FOR ALLOWING COMPARISONS OF TWO OR MORE KEY-VALUE PAIRS
 ############
 gorp> -j -n 'ggjubvvnn str(x[`6`]) <= x[`9`] ~~@status' /bad_json.json
@@ -375,9 +362,8 @@ gorp> -j -n 'ggvvnn str(x[`b`])=~`^\d` ~~zz\dvvnnx<4' /bad_json.json
     {
     ('9"a"',): 2
     }
-}''',
-
-'''############
+}""",
+        """############
 ## REVERSING SELECTIVITY (WHAT IF YOU WANT A CONSTRAINT TO *NOT* BE SATISFIED?)
 ############
 gorp> -j -n 'zz!!\dvvnn:~~@!!yu' /bad_json.json # '!!' is a flag that reverses the
@@ -433,9 +419,8 @@ gorp> -j -n '..~~@zz^(?i)[a-z]+\d$~~^^' /bad_json.json
         None
         ]
     }
-}''',
-
-'''############
+}""",
+        """############
 ## CALCULATING AGGREGATE FUNCTIONS AT VARIOUS LEVELS OF GRANULARITY
 ############
 Consider a new JSON file, baseball.json.
@@ -493,6 +478,6 @@ We've at least touched on all of the key features, the most important of which a
         same iterable.
     - '~~@' and '~~^' to get children and parents, respectively .
     - '!!' to reverse the selectivity of key and value matching.
-    - 'AGG<function>BY<int/slice>' to calculate aggregates with grouping.'''
-    ]
+    - 'AGG<function>BY<int/slice>' to calculate aggregates with grouping.""",
+    ],
 }

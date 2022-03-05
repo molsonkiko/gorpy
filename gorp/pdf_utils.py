@@ -1,4 +1,4 @@
-'''Uses pdfminer.six to extract text from PDF documents.
+"""Uses pdfminer.six to extract text from PDF documents.
 This uses gorp.textcache to store text between sessions.
 Main functions:
     - pagecount: counts in a document (much faster than extract_text),
@@ -8,7 +8,7 @@ Main functions:
 Currently get_text_by_page is the default function used for extracting PDF 
     text, because a (page, line) tuple is more useful for locating a line in 
     a PDF than just a line number.
-'''
+"""
 from pdfminer.high_level import extract_text, extract_pages, LAParams
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
@@ -16,38 +16,40 @@ from gorp.textcache import TextCache
 from gorp.utils import PDF_PAGE_LIMIT, gorpdir, os
 import functools
 
-pdftext_loc = os.path.join(gorpdir, 'pdf_textcache.sqlite')
+pdftext_loc = os.path.join(gorpdir, "pdf_textcache.sqlite")
 
 pdf_textcache = TextCache(pdftext_loc)
 
+
 def pagecount(fname):
-    '''document: a PDFDocument object.
-    Returns: an integer, the number of pages in the document.
-This takes 5-20% as long as extract_text, so it's worth checking first.'''
-    f = open(fname, 'rb')
+    """document: a PDFDocument object.
+        Returns: an integer, the number of pages in the document.
+    This takes 5-20% as long as extract_text, so it's worth checking first."""
+    f = open(fname, "rb")
     try:
         parser = PDFParser(f)
         document = PDFDocument(parser)
         metadata = document.catalog
-        pgs = metadata['Pages']
+        pgs = metadata["Pages"]
         pgdict = pgs.resolve()
-        return pgdict['Count']
+        return pgdict["Count"]
     finally:
         f.close()
 
 
 def check_cache(pdf_analyzer):
-    '''pdf_analyzer: function that performs an expensive analysis of PDF documents.
-The function returned by this decorator first checks the pdf_textcache for 
-    the filename, then checks to see if the number of pages in the document 
-    is over the limit, and only then does the expensive analysis.'''
+    """pdf_analyzer: function that performs an expensive analysis of PDF documents.
+    The function returned by this decorator first checks the pdf_textcache for
+        the filename, then checks to see if the number of pages in the document
+        is over the limit, and only then does the expensive analysis."""
+
     @functools.wraps(pdf_analyzer)
     def wrapper(fname, *args, **kwargs):
         text = pdf_textcache.get(fname)
         if not text:
             numpages = pagecount(fname)
             # print(f'{numpages = }')
-            if numpages <= PDF_PAGE_LIMIT: # from DEFAULT_OPTIONS.json
+            if numpages <= PDF_PAGE_LIMIT:  # from DEFAULT_OPTIONS.json
                 # yes, extract_text really is that slow. We won't even TRY to
                 # parse documents that are too many pages (default max is 100).
                 text = pdf_analyzer(fname, *args, **kwargs)
@@ -56,32 +58,33 @@ The function returned by this decorator first checks the pdf_textcache for
                 return None
         # print(f'{text = }')
         return text
+
     return wrapper
 
 
 @check_cache
 def get_text(fname, **kwargs):
-    '''Gets the text for a PDF, but only if its length is less than a 
-    prespecified maximum number of pages.'''
+    """Gets the text for a PDF, but only if its length is less than a
+    prespecified maximum number of pages."""
     return extract_text(fname, **kwargs)
 
 
 @check_cache
-def get_text_by_page(pdf_file, laparams = LAParams(), **kwargs):
-    '''As get_text, but gets the text split into pages.
-    '''
+def get_text_by_page(pdf_file, laparams=LAParams(), **kwargs):
+    """As get_text, but gets the text split into pages."""
     pages = extract_pages(pdf_file, **kwargs)
     out = []
     for pg in pages:
-        text = ''
-        pg.analyze(laparams = laparams)
+        text = ""
+        pg.analyze(laparams=laparams)
         for obj in pg._objs:
-            if not hasattr(obj, 'get_text'):
-                text += '\n'
+            if not hasattr(obj, "get_text"):
+                text += "\n"
             else:
                 text += obj.get_text()
         out.append(text)
     return out
+
 
 # Below are some benchmarks for run time for pagecount vs. extract_text based on PDF
 # size. The run time depends a lot on how many images and other fancy non-text things,

@@ -1,4 +1,4 @@
-'''Contains utilities for performing complex searches in nested Python 
+"""Contains utilities for performing complex searches in nested Python 
     iterables based on both keys/indices and values.
     This has been tested (using gorp.test.test_jsonpath) on Python 3.6-3.9.
     It might work on 3.5, but no warranty is made except for 3.6-3.9.
@@ -90,6 +90,7 @@ but I would also like to explain the philosophy that motivates this choice:
     
     * A more talented programmer than I could undoubtedly create a parser 
     that can handle the overloading of special characters, but I can't.
-'''
+"""
 from gorp.jsonpath.jsonpath import *
-__version__ = '0.2.0'
+
+__version__ = "0.2.0"

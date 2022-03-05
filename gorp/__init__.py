@@ -1,4 +1,4 @@
-'''gorpy: Good Old Regex and Python
+"""gorpy: Good Old Regex and Python
 This is a grep/sed/ls/renaming tool for Python 3.6-3.9 that includes:
     * piping syntax, 
     * a built-in jsonpath implementation for searching and manipulating JSON/YAML
@@ -18,12 +18,28 @@ For renaming and finding files, I will usually stick to the Windows File Explore
 I envision gorp being most useful as a tool for editing JSON and YAML based on the
     strength of the jsonpath module.
 I also find the ability to automatically open files found convenient.
-'''
-__all__ = ['readfiles', 'option_docs', 'utils', 'x_option', 'zip_utils', 'tabular_excel', 'textcache', '__main__', 'pdf_utils', 'k_option_del_files', 'gprint', 'jsonpath', 'extended_programming_file_exts']
+"""
+__all__ = [
+    "readfiles",
+    "option_docs",
+    "utils",
+    "x_option",
+    "zip_utils",
+    "tabular_excel",
+    "textcache",
+    "__main__",
+    "pdf_utils",
+    "k_option_del_files",
+    "gprint",
+    "jsonpath",
+    "extended_programming_file_exts",
+    "DEFAULT_OPTIONS",
+    "INITIAL_DEFAULT_OPTIONS",
+]
 
 from .readfiles import GorpSession, GorpLogger, GorpHandler, FileReader, Orddict
 from .readfiles import helpstring
-from .utils import DEFAULT_OPTIONS, PDF_PAGE_LIMIT, PROMPT_K_OPTION, PROMPT_U_OPTION, U_OPTION_OVERWRITES
+from .utils import DEFAULT_OPTIONS, INITIAL_DEFAULT_OPTIONS
 from . import jsonpath
 
-__version__ = '1.0.0'
+__version__ = "2.0.1"

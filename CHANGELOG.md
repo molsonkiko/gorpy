@@ -33,6 +33,26 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 
+
+## [2.1.0] - 2022-03-04
+
+gorp version 2.1.0 is now available on the Python package index.
+It has been tested for Python 3.6 to 3.10.
+
+### Added
+
+- The -z option for creating zip files now has two related default options, Z_OPTION_OVERWRITES and PROMPT_Z_OPTION. 
+- Similar to the -u option, the -z option now tests to see if a zip file with the given name already exists. If it does, and PROMPT_Z_OPTION is True, it will ask the user if they want to overwrite that file or create a new zip archive with an incremented name.
+- If the user agrees to overwrite, or if Z_OPTION_OVERWRITES is True, the file is overwritten.
+- If PROMPT_Z_OPTION is False and Z_OPTION_OVERWRITES is False, any name collision will be resolved by incrementing the filename without asking the user for input.
+
+### Changed
+
+- is_iterable now recognizes `bytearray` objects as NOT being iterables, in line with how `str` and `bytes` are treated.
+- Upgraded most of my test suite to unittest (gorp.jsonpath is still based on doctest). After FAR too long using a lot of hard-to-read boilerplate code to test gorpy, it was time for a change.
+- Used [black](https://github.com/psf/black) to reformat all my code. Nothing can be done for its spaghetti-ness, but at least it will have somewhat professional formatting. 
+
+
 ## [1.0.0] - 2022-03-02
 
 gorp version 1.0.0 is now available on the Python package index.
