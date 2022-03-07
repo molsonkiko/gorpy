@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: gorpy
-Version: 2.0.1
+Version: 2.0.2
 Summary: Grep tool with extensions for reading files in many different ways
 Home-page: https://github.com/molsonkiko/gorpy
 Author: Mark Johnston Olson

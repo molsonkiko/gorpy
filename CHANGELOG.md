@@ -32,10 +32,10 @@ time of writing:
 Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
-- DO NOT DOWNLOAD gorpy version 2.0.1 or 2.0.0 from test-PYPI! They both have bugs with the -x and -z options! Continue using 1.0.0 from PYPI.
+- The -x option tests are broken for some reason, but the option itself works fine (as of version 2.0.2).
 
 
-## [2.1.0] - ???
+## [2.0.2] - 2022-03-07
 
 ### Added
 
@@ -48,8 +48,8 @@ base names that start with <string>, even though only the base name is matched.
 
 - is_iterable now recognizes `bytearray` objects as NOT being iterables, in line with how `str` and `bytes` are treated.
 - Upgraded most of my test suite to unittest (gorp.jsonpath is still based on doctest). After FAR too long using a lot of hard-to-read boilerplate code to test gorpy, it was time for a change.
-- Used [black](https://github.com/psf/black) to reformat all my code. Nothing can be done for its spaghetti-ness, but at least it will have somewhat professional formatting. 
-
+- Used [black](https://github.com/psf/black) to reformat all my code. Nothing can be done for its spaghetti-ness, but at least it will have somewhat professional formatting.
+- The -x option will produce an error message when you run the 
 
 ## [1.0.0] - 2022-03-02
 
