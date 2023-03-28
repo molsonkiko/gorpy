@@ -11,6 +11,8 @@ testdir = os.path.join(gorpdir, "test")
 os.chdir(testdir)
 tempdir = os.path.join(testdir, "temp")
 db_fname = os.path.join(testdir, "temp_textcache.sqlite")
+if os.path.exists(db_fname):
+    os.unlink(db_fname)
 guten_fname = os.path.join(tempdir, "GUT)enTHARST.js")
 
 
@@ -127,7 +129,7 @@ class TextCacheTester(unittest.TestCase):
         oldest = self.tc.oldest_files(9)
         self.assertEqual(guten_fname, oldest[8][0])
 
-    def test_8_cleanup(self):
+    def test_zzzz_teardown(self):
         os.unlink("temp_textcache.sqlite")
         os.chdir(ogdir)
 

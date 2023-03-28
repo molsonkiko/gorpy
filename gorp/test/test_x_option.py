@@ -54,7 +54,7 @@ class XOptionTester(unittest.TestCase):
 
     def zzzz_cleanup(self):
         os.chdir(ogdir)
-        session.close()
+        self.session.close()
 
 
 if __name__ == "__main__":

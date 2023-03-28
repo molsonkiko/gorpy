@@ -45,6 +45,9 @@ def check_cache(pdf_analyzer):
 
     @functools.wraps(pdf_analyzer)
     def wrapper(fname, *args, **kwargs):
+        if not os.path.exists(fname):
+            return
+        fname = os.path.abspath(fname)
         text = pdf_textcache.get(fname)
         if not text:
             numpages = pagecount(fname)

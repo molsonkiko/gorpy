@@ -42,4 +42,4 @@ from .readfiles import helpstring
 from .utils import DEFAULT_OPTIONS, INITIAL_DEFAULT_OPTIONS
 from . import jsonpath
 
-__version__ = "2.0.2"
+__version__ = "2.0.3"

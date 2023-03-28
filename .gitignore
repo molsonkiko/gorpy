@@ -1,1 +1,3 @@
-gorpy.egg-info
+/gorpy.egg-info
+gorpy-0*
+.hypothesis
