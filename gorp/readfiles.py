@@ -1029,16 +1029,13 @@ class FileReader:
                 from .pdf_utils import get_text, get_text_by_page, pdf_textcache
 
                 text = get_text_by_page(file)
-            except ImportError:
-                warn_first_import_error("pdfminer")
-                text = None
-            if text is not None:
                 lines = (
                     ((ii, jj), line)
                     for ii, page in enumerate(text)
                     for jj, line in enumerate(page.split("\n"))
                 )
-            else:
+            except ImportError:
+                warn_first_import_error("pdfminer")
                 lines = []
         elif self.docx and ext in {"docx", "docm", "doc"}:
             try:
@@ -1050,8 +1047,6 @@ class FileReader:
                         lines = [
                             (ii, para.text) for ii, para in enumerate(doc.paragraphs)
                         ]
-                        text = "dummy text"
-                        # to avoid raising error on "del text"
                     except:
                         bad_text_files.add(file)
                         return
@@ -1156,10 +1151,8 @@ class FileReader:
                     except:
                         # document is not tabular most likely
                         return
-                    text = ""
                 else:  # not self.a JSON or YAML file
                     return
-                del text
                 self.jsonpath.add_json(docs)
                 if self.jsonpath.aggregator is not None:
                     # use the aggregate function of jsonpath to aggregate the
@@ -1188,7 +1181,6 @@ class FileReader:
             else:  # any other text-type file
                 lines = enumerate(re.split("\r?\n", text))
         try:
-            del text
             lines
         except UnboundLocalError:
             return
