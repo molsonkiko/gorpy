@@ -1027,16 +1027,17 @@ class FileReader:
             try:
                 global pdf_textcache
                 from .pdf_utils import get_text, get_text_by_page, pdf_textcache
-
-                text = get_text_by_page(file)
-                lines = (
-                    ((ii, jj), line)
-                    for ii, page in enumerate(text)
-                    for jj, line in enumerate(page.split("\n"))
-                )
             except ImportError:
                 warn_first_import_error("pdfminer")
                 lines = []
+            text = get_text_by_page(file)
+            if not text:
+                return
+            lines = (
+                ((ii, jj), line)
+                for ii, page in enumerate(text)
+                for jj, line in enumerate(page.split("\n"))
+            )
         elif self.docx and ext in {"docx", "docm", "doc"}:
             try:
                 import docx
