@@ -1,13 +1,12 @@
 Metadata-Version: 2.1
 Name: gorpy
-Version: 2.0.2
+Version: 2.0.4
 Summary: Grep tool with extensions for reading files in many different ways
 Home-page: https://github.com/molsonkiko/gorpy
 Author: Mark Johnston Olson
 Author-email: mjolsonsfca@gmail.com
 License: MIT/X
 Keywords: grep tool,text mining,jsonpath
-Platform: UNKNOWN
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
@@ -94,4 +93,3 @@ TODO: add code coverage link (the below link is broken)
 ![gorpy logo](https://github.com/molsonkiko/gorpy/blob/main/gorpy_logo_small.PNG?raw=true)
 
 _gorpy_logo.PNG and gorpy_logo_small.PNG modified from https://commons.wikimedia.org/wiki/File:Gorp.jpg and https://www.python.org/static/community_logos/python-logo-master-v3-TM.png_
-

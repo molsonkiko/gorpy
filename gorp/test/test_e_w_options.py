@@ -58,7 +58,14 @@ class E_WOptionTester(unittest.TestCase):
             os.path.join(newdirname, "subdir", "dict size vs memory allocated.png")
         ]
         self.assertEqual(self.session.resultset, correct_resultset, query)
-
+        ################
+        ## W TEST 2: TEST W OPTION WITH json dump for PDF FILES
+        ################
+        self.session.receive_query("-a 'silly.*pdf$' /..\\..\\testDir -}} -pdf '.+' -}} -w 'silly_pdf.json'")
+        correct_dumped_json = {f"{gorpdir}\\testDir\\silly_html_example.pdf": {"(0, 0)": "silly_html_example", "(0, 2)": "February 5, 2021", "(0, 4)": "hello world", "(0, 6)": "YO DAWG WHAT WE DO???!!!", "(0, 8)": "ok, I'm calm, i'm calm</li>", "(0, 10)": "1"}}
+        with open('silly_pdf.json') as f:
+            actual_dumped_json = json.load(f)
+        self.assertEqual(actual_dumped_json, correct_dumped_json)
 
 if __name__ == "__main__":
     unittest.main()

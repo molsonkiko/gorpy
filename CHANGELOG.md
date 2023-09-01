@@ -33,7 +33,18 @@ Even though the directory name is no longer matched by the -f and -a options,
 you can't (currently) use -f "^<string>" to find all text-type files with 
 base names that start with <string>, even though only the base name is matched.
 - The -x option tests are broken for some reason, but the option itself works fine (as of version 2.0.2).
+- deal with failing test of PDF option not including redundant copies of files
 
+
+## [2.0.4] - 2023-08-31
+
+### Fixed
+
+- fixed bug where pdf option results containing PDF text could not be piped to JSON file due to tuple keys.
+
+## [2.0.3] - 2023-03-28
+
+- fixed bug where PDF database would have a bunch of nonexistent files
 
 ## [2.0.2] - 2022-03-07
 

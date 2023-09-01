@@ -501,8 +501,22 @@ class GorpHandler:
                     warn_first_import_error("yaml")
             else:  # write to a JSON file
                 write_to_name = increment_name(ext_checker(write_to_name, "json"))
+                json_text = None
+                try:
+                    json_text = json.dumps(self.resultset, indent=4)
+                except TypeError as ex:
+                    if 'keys must be str, int, float, bool or None, not tuple' not in str(ex):
+                        raise
+                    # pdf option has (page, line) tuples as keys, which json.dumps can't handle
+                    json_acceptable_resultset = {}
+                    for fname, f_results in self.resultset.items():
+                        f_acceptable_results = {}
+                        for page_line, page_results in f_results.items():
+                            f_acceptable_results[str(page_line)] = page_results
+                        json_acceptable_resultset[fname] = f_acceptable_results
+                    json_text = json.dumps(json_acceptable_resultset, indent=4)
                 with open(write_to_name, "w") as f:
-                    json.dump(self.resultset, f, indent=4)
+                    f.write(json_text)
         if self.z:  # collect all files into a ZIP file at target location
             import zipfile
             from gorp.zip_utils import make_relpaths

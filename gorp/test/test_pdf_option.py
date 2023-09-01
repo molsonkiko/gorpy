@@ -10,7 +10,7 @@ try:
 except ImportError as ex:
     warn_first_import_error("pdfminer")
     raise ex
-# tested on Python 3.6 - 3.10
+# tested on Python 3.6 - 3.11
 
 
 ogdir = os.getcwd()

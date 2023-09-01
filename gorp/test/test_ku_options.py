@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# tested in python 3.6-3.10
+# tested in python 3.6-3.11
 import os
 import shutil
 import unittest
